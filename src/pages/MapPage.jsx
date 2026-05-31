@@ -75,6 +75,10 @@ const MapPage = () => {
   }, []);
 
   const handleSelectEvent = (event) => {
+    if (selectedEvent?._id === event._id) {
+      navigate(`/event/${event._id}`);
+      return;
+    }
     setSelectedEvent(event);
     if (event.location?.latitude && event.location?.longitude) {
       setMapCenter([event.location.latitude, event.location.longitude]);
@@ -150,13 +154,26 @@ const MapPage = () => {
                     <p className="text-[10px] text-gray-400 mt-0.5">by {ev.organizer?.name}</p>
                   </div>
                   
-                  <div className="flex items-center gap-3 text-[10px] text-gray-500 mt-2">
-                    <span className="flex items-center gap-1 font-semibold shrink-0">
-                      <Users size={12} className="text-gray-400" /> {ev.spotsLeft} spots left
-                    </span>
-                    <span className="truncate flex items-center gap-0.5">
-                      <MapPin size={10} className="text-gray-405 shrink-0" /> {ev.location.address.split(',')[0]}
-                    </span>
+                  <div className="flex items-center justify-between gap-3 text-[10px] mt-2">
+                    <div className="flex items-center gap-3 text-gray-505 min-w-0">
+                      <span className="flex items-center gap-1 font-semibold shrink-0">
+                        <Users size={12} className="text-gray-400" /> {ev.spotsLeft} spots left
+                      </span>
+                      <span className="truncate flex items-center gap-0.5">
+                        <MapPin size={10} className="text-gray-405 shrink-0" /> {ev.location.address.split(',')[0]}
+                      </span>
+                    </div>
+                    {selectedEvent?._id === ev._id && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/event/${ev._id}`);
+                        }}
+                        className="bg-primary hover:bg-primary-dark text-white text-[9px] font-black px-2.5 py-1 rounded-lg transition-all flex items-center gap-0.5 shrink-0 animate-fade-in cursor-pointer"
+                      >
+                        Details <ChevronRight size={10} />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

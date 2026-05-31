@@ -46,6 +46,34 @@ const CreateEvent = () => {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // Autocomplete Suggestions Search Debounce
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (searchQuery.trim().length < 3) {
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5&countrycodes=in`, {
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'GTG-Getogather-Web-App'
+          }
+        });
+        const data = await response.json();
+        if (data) {
+          setSuggestions(data);
+        }
+      } catch (err) {
+        console.error('Error fetching suggestions:', err);
+      }
+    }, 450);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
 
   useEffect(() => {
     setCoverImage(CATEGORY_COVERS[category] || CATEGORY_COVERS.Other);
@@ -394,7 +422,12 @@ const CreateEvent = () => {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
@@ -404,6 +437,38 @@ const CreateEvent = () => {
                     placeholder="Search specific area (e.g. Indiranagar, Bangalore)"
                     className="w-full bg-gray-50 border border-gray-250 rounded-xl pl-9 pr-3 py-3 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-1 focus:ring-primary"
                   />
+
+                  {/* Dynamic Suggestions List */}
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div className="absolute left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-2xl shadow-xl z-[2000] overflow-hidden max-h-60 overflow-y-auto animate-fade-in">
+                      {suggestions.map((sug) => {
+                        const parts = sug.display_name.split(',');
+                        const title = parts[0];
+                        const subtitle = parts.slice(1, 4).join(',').trim();
+                        
+                        return (
+                          <div
+                            key={sug.place_id}
+                            onClick={() => {
+                              const lat = parseFloat(sug.lat);
+                              const lng = parseFloat(sug.lon);
+                              setLatitude(lat);
+                              setLongitude(lng);
+                              const simplifiedAddress = parts.slice(0, 4).join(',').trim();
+                              setAddress(simplifiedAddress);
+                              setSearchQuery(simplifiedAddress);
+                              setSuggestions([]);
+                              setShowSuggestions(false);
+                            }}
+                            className="px-4 py-3 hover:bg-purple-50/50 cursor-pointer border-b border-gray-100 last:border-0 flex flex-col transition-colors text-left"
+                          >
+                            <span className="text-xs font-extrabold text-gray-850">{title}</span>
+                            <span className="text-[10px] text-gray-400 truncate mt-0.5">{subtitle}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
                 <button
                   type="button"

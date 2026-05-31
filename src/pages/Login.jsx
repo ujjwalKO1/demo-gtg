@@ -20,7 +20,24 @@ const Login = () => {
     try {
       const result = await login(email, password);
       if (result.success) {
-        navigate('/');
+        navigate('/dashboard');
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleQuickLogin = async (demoEmail) => {
+    setError(null);
+    setLoading(true);
+    try {
+      const result = await login(demoEmail, 'password123');
+      if (result.success) {
+        navigate('/dashboard');
       } else {
         setError(result.message);
       }
@@ -50,6 +67,33 @@ const Login = () => {
             <span>{error}</span>
           </div>
         )}
+
+        {/* Quick Demo Login Panel */}
+        <div className="bg-purple-50/50 border border-purple-100/50 rounded-2xl p-4 flex flex-col gap-2.5">
+          <span className="block text-[10px] font-black text-primary uppercase tracking-wider text-center">
+            🚀 Quick Demo Login (Pre-Seeded Accounts)
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <button
+              onClick={() => handleQuickLogin('vikram@gmail.com')}
+              className="bg-white hover:bg-purple-150 text-gray-850 font-extrabold text-[10px] py-2.5 px-1 rounded-xl border border-purple-200/60 shadow-3xs cursor-pointer text-center leading-tight transition-all active:scale-95"
+            >
+              Vikram <span className="block text-[8px] font-medium text-gray-400">Organizer</span>
+            </button>
+            <button
+              onClick={() => handleQuickLogin('aravind@gmail.com')}
+              className="bg-white hover:bg-purple-150 text-gray-850 font-extrabold text-[10px] py-2.5 px-1 rounded-xl border border-purple-200/60 shadow-3xs cursor-pointer text-center leading-tight transition-all active:scale-95"
+            >
+              Aravind <span className="block text-[8px] font-medium text-gray-400">Social Host</span>
+            </button>
+            <button
+              onClick={() => handleQuickLogin('pooja@gmail.com')}
+              className="bg-white hover:bg-purple-150 text-gray-850 font-extrabold text-[10px] py-2.5 px-1 rounded-xl border border-purple-200/60 shadow-3xs cursor-pointer text-center leading-tight transition-all active:scale-95"
+            >
+              Pooja <span className="block text-[8px] font-medium text-gray-400">Attendee</span>
+            </button>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>

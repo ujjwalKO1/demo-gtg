@@ -67,11 +67,20 @@ const createCustomIcon = (category) => {
 // Map sub-component to handle map centering & animations
 const ChangeMapView = ({ center, zoom }) => {
   const map = useMap();
+  const lat = center ? center[0] : null;
+  const lng = center ? center[1] : null;
+
   useEffect(() => {
-    if (center) {
-      map.setView(center, zoom || map.getZoom(), { animate: true, duration: 0.8 });
+    if (lat !== null && lng !== null) {
+      const currentCenter = map.getCenter();
+      // Compare values to prevent fighting with user dragging
+      const isSame = Math.abs(currentCenter.lat - lat) < 0.0001 && Math.abs(currentCenter.lng - lng) < 0.0001;
+      
+      if (!isSame) {
+        map.setView([lat, lng], zoom || map.getZoom(), { animate: true, duration: 0.8 });
+      }
     }
-  }, [center, zoom, map]);
+  }, [lat, lng, zoom, map]);
   return null;
 };
 

@@ -18,7 +18,14 @@ import creditRoutes from './routes/creditRoutes.js';
 dotenv.config();
 
 // Connect to database
-connectDB();
+connectDB().then(() => {
+  // Auto-seed if needed
+  import('./config/seedHelper.js').then(({ seedDB }) => {
+    seedDB().catch(err => console.error('Auto-seed error:', err));
+  });
+}).catch(err => {
+  console.error('Database connection failed:', err);
+});
 
 const app = express();
 
