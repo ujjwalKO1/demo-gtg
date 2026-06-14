@@ -102,119 +102,61 @@ const Home = () => {
 
   return (
     <div className="flex-grow bg-slate-50 pb-0 overflow-y-auto">
-      {/* Subtle Grid Hero Section */}
-      <section className="relative bg-white border-b border-gray-150 py-16 px-6 overflow-hidden">
-        {/* Subtle grid background pattern */}
-        <div className="absolute inset-0 opacity-40 pointer-events-none select-none">
-          <div className="w-full h-full bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+      {/* Restored: Premium Desktop Widescreen Hero Banner (Styled in Professional Teal) */}
+      <div className="bg-gradient-to-r from-teal-950 via-slate-900 to-teal-900 text-white py-12 md:py-16 px-6 mb-8 relative overflow-hidden shadow-md">
+        <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none select-none">
+          {/* Vector grid aesthetics */}
+          <div className="w-full h-full bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-12 relative z-10">
-          <div className="flex-1 text-center lg:text-left">
-            <span className="inline-flex items-center gap-1.5 bg-purple-50 border border-purple-100 text-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider select-none mb-6">
-              <Sparkles size={12} className="fill-purple-100" /> Physical Connection Reimagined
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+          <div className="flex-1 text-center md:text-left">
+            <span className="bg-teal-500/25 border border-teal-400/30 text-teal-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider select-none">
+              🔥 Start hosting locally
             </span>
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-gray-900 mt-2">
-              Discover Passionate <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">Local Gatherings.</span>
+            <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight mt-4 max-w-xl">
+              Discover Real-World Getogathers.
             </h1>
-            <p className="text-base text-gray-500 mt-5 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              Get-To-Gather is a local meetup platform designed for physical activities. 
-              Find chess tables, coding circles, football games, or acoustic music jams 
-              happening directly in your neighborhood.
+            <p className="text-sm md:text-base text-teal-100 mt-4 leading-relaxed max-w-lg">
+              Get-To-Gather links you with local events of any scale. Host board game sessions in parks, Tech code hacks, 7v7 football matches, or acoustic music jams in your city.
             </p>
-            
-            <div className="flex flex-wrap items-center gap-4 mt-8 justify-center lg:justify-start">
-              <button
-                onClick={() => navigate('/map')}
-                className="bg-primary hover:bg-primary-dark text-white font-bold text-sm px-7 py-3.5 rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-98"
-              >
-                <Compass size={18} /> Explore Interactive Map
-              </button>
+            <div className="flex flex-wrap items-center gap-3.5 mt-8 justify-center md:justify-start">
               <button
                 onClick={() => navigate('/create')}
-                className="bg-white hover:bg-slate-50 text-gray-700 border border-gray-250 font-bold text-sm px-7 py-3.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-98"
+                className="bg-white hover:bg-gray-100 text-primary font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md flex items-center gap-1.5 cursor-pointer active:scale-98"
               >
-                <Plus size={18} /> Host a Gathering
+                <Plus size={16} strokeWidth={2.5} /> Host Getogather
               </button>
-            </div>
-
-            {/* Quick Metrics display */}
-            <div className="flex flex-wrap gap-8 mt-12 justify-center lg:justify-start border-t border-gray-100 pt-8 max-w-lg">
-              <div>
-                <p className="text-2xl font-black text-gray-900">1.4k+</p>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Meetups Hosted</p>
-              </div>
-              <div className="border-l border-gray-200 pl-8">
-                <p className="text-2xl font-black text-gray-900">98.4%</p>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Attendance Rate</p>
-              </div>
-              <div className="border-l border-gray-200 pl-8">
-                <p className="text-2xl font-black text-gray-900">4.9/5</p>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Average Host Rating</p>
-              </div>
+              <button
+                onClick={() => navigate('/map')}
+                className="bg-teal-650 hover:bg-teal-700 text-white border border-teal-500/50 font-bold text-xs px-6 py-3 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer active:scale-98"
+              >
+                <Compass size={16} /> Explore Map
+              </button>
             </div>
           </div>
           
-          {/* Visual Product Mockup Card */}
-          <div className="flex-1 w-full max-w-lg bg-white border border-gray-150 rounded-3xl p-6 shadow-2xl relative">
-            <div className="absolute -top-4 -left-4 bg-amber-500 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md flex items-center gap-1 select-none">
-              <Star size={12} className="fill-white" /> Feature Spotlight
+          {/* Stats indicator box for PC view (Restored & Refined with Professional Stats) */}
+          <div className="hidden lg:flex flex-col gap-3 bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-3xl shrink-0 w-80 shadow-2xl">
+            <h3 className="font-bold text-sm text-teal-200 uppercase tracking-wider">Active Community Metrics</h3>
+            <div className="border-b border-white/10 pb-2 mt-2">
+              <p className="text-[10px] text-teal-300 font-bold uppercase">Verified Hosts</p>
+              <p className="text-xl font-extrabold text-white">850+ Organizers</p>
             </div>
-            
-            <div className="flex items-center gap-3 border-b border-gray-100 pb-4 mb-4">
-              <div className="w-10 h-10 bg-purple-50 text-primary rounded-xl flex items-center justify-center font-bold text-sm">
-                💬
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900 text-sm">Aravind's board game meetup</h3>
-                <p className="text-xs text-gray-400">Tonight at 7:30 PM • 3 km away</p>
-              </div>
+            <div className="border-b border-white/10 pb-2">
+              <p className="text-[10px] text-teal-300 font-bold uppercase">Success Attendance Rate</p>
+              <p className="text-xl font-extrabold text-white">98.4% Checked In</p>
             </div>
-
-            <div className="space-y-3">
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                <ShieldCheck size={18} className="text-primary mt-0.5 shrink-0" />
-                <div>
-                  <h4 className="font-bold text-xs text-gray-900">Verified Safety Badge</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed mt-0.5">
-                    Hosts link secure identity verification, assuring guests of a safe meetup environment.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-start gap-3">
-                <Users size={18} className="text-emerald-500 mt-0.5 shrink-0" />
-                <div>
-                  <h4 className="font-bold text-xs text-gray-900">Built-in Accountability</h4>
-                  <p className="text-[11px] text-gray-500 leading-relaxed mt-0.5">
-                    Attendees check in offline to earn Community Scores, unlocking future hosting tokens.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 pt-4 border-t border-gray-100 flex justify-between items-center text-xs">
-              <span className="text-gray-400 font-semibold">Ready to participate?</span>
-              <button 
-                onClick={() => navigate('/map')} 
-                className="text-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                Find coordinates <ArrowRight size={14} />
-              </button>
+            <div>
+              <p className="text-[10px] text-teal-300 font-bold uppercase">Active Gatherings</p>
+              <p className="text-xl font-extrabold text-white">1,420+ Monthly</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Main Discover Layout (Events, Search & Filters) */}
-      <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="mb-6">
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight">Search Neighborhood Events</h2>
-          <p className="text-xs text-gray-500 mt-1">Filter events by coordinates, keyword queries, or categories</p>
-        </div>
-
+      <div className="content-container">
         {/* Search, filters, slider range controls */}
         <div className="bg-white border border-gray-150 rounded-3xl p-5 mb-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -322,7 +264,7 @@ const Home = () => {
             )}
 
             {/* Main grid catalog */}
-            <div>
+            <div className="mb-12">
               <h3 className="text-xs font-black text-gray-950 uppercase tracking-widest flex items-center gap-1.5 mb-4 font-sans">
                 <Calendar size={14} className="text-primary" /> 
                 {search || activeCategory !== 'All' || nearMeActive ? 'All Search Results' : 'Recommended Meetups'}
@@ -335,9 +277,9 @@ const Home = () => {
             </div>
           </div>
         )}
-      </section>
+      </div>
 
-      {/* Redesigned: How it Works Section (New Element) */}
+      {/* How it Works Section */}
       <section className="bg-white border-t border-b border-gray-150 py-16 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -391,7 +333,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Safety & Economy Highlights (New Element) */}
+      {/* Safety & Economy Highlights */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -419,7 +361,7 @@ const Home = () => {
               </div>
 
               <div className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 text-primary flex items-center justify-center shrink-0 border border-indigo-100">
+                <div className="w-8 h-8 rounded-lg bg-teal-50 text-primary flex items-center justify-center shrink-0 border border-teal-100">
                   <CheckCircle size={16} />
                 </div>
                 <div>
@@ -453,7 +395,7 @@ const Home = () => {
             </blockquote>
 
             <div className="flex items-center gap-3 mt-4">
-              <div className="w-10 h-10 rounded-full bg-purple-200 overflow-hidden">
+              <div className="w-10 h-10 rounded-full bg-teal-200 overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80" 
                   alt="Founder Profile" 
@@ -469,11 +411,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Redesigned FAQ Section (New Element) */}
+      {/* FAQ Section */}
       <section className="bg-slate-50 border-t border-gray-150 py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <span className="text-primary text-xs font-bold uppercase tracking-wider bg-purple-50 border border-purple-100 px-3 py-1 rounded-full">
+            <span className="text-primary text-xs font-bold uppercase tracking-wider bg-teal-50 border border-teal-100 px-3 py-1 rounded-full">
               FAQs
             </span>
             <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mt-3">Frequently Asked Questions</h2>
@@ -521,7 +463,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Professional Footer (New Element) */}
+      {/* Professional Footer */}
       <footer className="bg-gray-900 text-gray-400 border-t border-gray-850 py-12 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
@@ -563,7 +505,7 @@ const Home = () => {
                 <span>Port 5000 (Express Node)</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
                 <span>In-Memory MongoDB Active</span>
               </li>
             </ul>
