@@ -56,7 +56,7 @@ const Login = () => {
           <div className="w-12 h-12 bg-purple-50 text-primary flex items-center justify-center rounded-2xl mb-4 font-mono font-bold text-xl mx-auto sm:mx-0">
             ⚡
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-gray-900">Sign In to GTG</h1>
+          <h1 className="text-2xl font-black tracking-tight text-gray-900">Sign In to Get-To-Gather</h1>
           <p className="text-xs text-gray-500 mt-1">Discover local events and connect with your community groups.</p>
         </div>
 

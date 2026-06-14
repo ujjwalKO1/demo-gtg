@@ -12,8 +12,8 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-1.5 select-none shrink-0">
-          <span className="text-2xl font-black tracking-tight text-primary flex items-center gap-1.5">
-            GTG <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-primary border border-purple-100 rounded-full font-mono uppercase tracking-wider">Web</span>
+          <span className="text-xl font-extrabold tracking-tight text-gray-900 flex items-center gap-1">
+            Get-To-Gather<span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
           </span>
         </Link>
 
