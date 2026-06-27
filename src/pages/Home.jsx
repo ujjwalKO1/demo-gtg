@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import EventCard from '../components/EventCard';
 import { 
   Search, MapPin, Sparkles, Navigation, Calendar, Plus, Compass, 
-  ShieldCheck, HelpCircle, Users, CheckCircle, ArrowRight, Quote
+  ShieldCheck, HelpCircle, Users, CheckCircle, ArrowRight, Quote, X
 } from 'lucide-react';
 
 const CATEGORIES = [
