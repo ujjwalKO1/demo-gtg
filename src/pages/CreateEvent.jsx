@@ -222,21 +222,21 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="flex-grow bg-slate-50 py-8 overflow-y-auto">
+    <div className="flex-grow bg-[#FAF7F2] py-8 overflow-y-auto">
       <div className="content-container">
         
         {/* Top Header Panel */}
-        <div className="bg-white border border-gray-150 rounded-3xl p-5 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xs">
+        <div className="bg-white border border-[#E6DFD3] rounded-3xl p-5 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xs">
           <div>
-            <h1 className="text-xl font-black text-gray-950 uppercase tracking-widest">Host a New Meetup</h1>
-            <p className="text-xs text-gray-500 mt-1">Publish an event to connect local community members.</p>
+            <h1 className="text-xl font-black text-[#3E2723] uppercase tracking-widest">Host a New Meetup</h1>
+            <p className="text-xs text-[#5D4037]/80 mt-1">Publish an event to connect local community members.</p>
           </div>
           
-          <div className="flex gap-1 bg-gray-100 p-0.5 rounded-full text-xs shrink-0 select-none">
+          <div className="flex gap-1 bg-[#EFECE3] p-0.5 rounded-full text-xs shrink-0 select-none">
             <button
               onClick={() => setMode('edit')}
               className={`flex items-center gap-1 px-4 py-2 rounded-full font-bold transition-all cursor-pointer ${
-                mode === 'edit' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-500 hover:text-gray-700'
+                mode === 'edit' ? 'bg-white text-[#3E2723] shadow-xs' : 'text-[#5D4037] hover:text-[#3E2723]'
               }`}
             >
               <Edit3 size={14} /> Edit Form
@@ -244,7 +244,7 @@ const CreateEvent = () => {
             <button
               onClick={() => setMode('preview')}
               className={`flex items-center gap-1 px-4 py-2 rounded-full font-bold transition-all cursor-pointer ${
-                mode === 'preview' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-500 hover:text-gray-700'
+                mode === 'preview' ? 'bg-white text-[#3E2723] shadow-xs' : 'text-[#5D4037] hover:text-[#3E2723]'
               }`}
             >
               <Eye size={14} /> Live Preview

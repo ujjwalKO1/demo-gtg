@@ -149,9 +149,9 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex-grow flex flex-col items-center justify-center bg-slate-50 p-8">
+      <div className="flex-grow flex flex-col items-center justify-center bg-[#FAF7F2] p-8">
         <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="mt-4 text-xs font-semibold text-gray-400">Loading organizer metrics...</p>
+        <p className="mt-4 text-xs font-semibold text-[#5D4037]">Loading organizer metrics...</p>
       </div>
     );
   }
@@ -159,20 +159,20 @@ const Dashboard = () => {
   const pendingRequests = requests.filter(r => r.status === 'pending');
 
   return (
-    <div className="flex-grow bg-slate-50 py-8 overflow-y-auto">
+    <div className="flex-grow bg-[#FAF7F2] py-8 overflow-y-auto">
       <div className="content-container">
         
         {/* Title Header */}
-        <div className="bg-white border border-gray-150 rounded-3xl p-5 mb-8 shadow-xs">
-          <h1 className="text-xl font-black text-gray-950 uppercase tracking-widest">Organizer Dashboard</h1>
-          <p className="text-xs text-gray-500 mt-1">Manage RSVP registration applications and mark verified check-ins.</p>
+        <div className="bg-white border border-[#E6DFD3] rounded-3xl p-5 mb-8 shadow-xs">
+          <h1 className="text-xl font-black text-[#3E2723] uppercase tracking-widest">Organizer Dashboard</h1>
+          <p className="text-xs text-[#5D4037]/80 mt-1">Manage RSVP registration applications and mark verified check-ins.</p>
         </div>
 
         {hostedEvents.length === 0 ? (
-          <div className="bg-white border border-gray-150 rounded-3xl p-12 text-center max-w-md mx-auto shadow-xs">
+          <div className="bg-white border border-[#E6DFD3] rounded-3xl p-12 text-center max-w-md mx-auto shadow-xs">
             <span className="text-4xl">📈</span>
-            <h3 className="font-extrabold text-gray-900 text-base mt-4 font-sans">No events hosted yet</h3>
-            <p className="text-xs text-gray-500 mt-2 mb-6 leading-relaxed">
+            <h3 className="font-extrabold text-[#3E2723] text-base mt-4 font-sans">No events hosted yet</h3>
+            <p className="text-xs text-[#5D4037]/80 mt-2 mb-6 leading-relaxed">
               You must host an event first before you can manage participants and check-ins.
             </p>
             <Link

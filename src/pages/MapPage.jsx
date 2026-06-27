@@ -87,12 +87,11 @@ const MapPage = () => {
 
   return (
     <div className="flex-grow flex flex-col md:flex-row h-[calc(100vh-69px)] overflow-hidden">
-      
       {/* LEFT COLUMN: Event Lists Sidebar (Visible on PC, Hidden/Overlay on Mobile) */}
-      <div className="w-full md:w-96 lg:w-[420px] bg-white border-r border-gray-150 flex flex-col shrink-0 h-full">
+      <div className="w-full md:w-96 lg:w-[420px] bg-[#FAF7F2] border-r border-[#E6DFD3] flex flex-col shrink-0 h-full">
         {/* Category Filters inside Sidebar */}
-        <div className="p-4 border-b border-gray-100 bg-gray-50/50 shrink-0">
-          <h2 className="font-extrabold text-sm text-gray-900 mb-3 uppercase tracking-wider">Discover on Map</h2>
+        <div className="p-4 border-b border-[#E6DFD3] bg-[#F4F0E8]/40 shrink-0">
+          <h2 className="font-extrabold text-sm text-[#3E2723] mb-3 uppercase tracking-wider">Discover on Map</h2>
           
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none select-none">
             {CATEGORIES.map((cat) => (
@@ -105,7 +104,7 @@ const MapPage = () => {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                   activeCategory === cat.name
                     ? 'bg-primary text-white border-primary shadow-xs'
-                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    : 'bg-white text-[#5D4037] border-[#E6DFD3] hover:bg-[#FAF7F2]'
                 }`}
               >
                 <span>{cat.emoji}</span>
@@ -120,28 +119,30 @@ const MapPage = () => {
           {loading ? (
             <div className="flex-1 flex flex-col items-center justify-center py-12">
               <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-3 text-[11px] text-gray-405 font-bold">Querying location pins...</p>
+              <p className="mt-3 text-[11px] text-[#5D4037] font-bold">Querying location pins...</p>
             </div>
           ) : events.length === 0 ? (
-            <p className="text-xs text-gray-400 text-center py-12">No active getogathers in this category.</p>
+            <p className="text-xs text-[#5D4037]/60 text-center py-12">No active gatherings in this category.</p>
           ) : (
             events.map((ev) => (
               <div
                 key={ev._id}
                 onClick={() => handleSelectEvent(ev)}
-                className={`border rounded-2xl p-3.5 flex gap-3 cursor-pointer hover:bg-gray-50 hover:border-purple-200 transition-all duration-150 relative ${
-                  selectedEvent?._id === ev._id ? 'border-primary bg-purple-50/20 ring-1 ring-purple-100' : 'border-gray-150 bg-white'
+                className={`border rounded-2xl p-3.5 flex gap-3 cursor-pointer hover:bg-[#F4F0E8]/50 hover:border-primary/30 transition-all duration-150 relative ${
+                  selectedEvent?._id === ev._id 
+                    ? 'border-primary bg-amber-50/40 ring-1 ring-amber-100' 
+                    : 'border-[#E6DFD3] bg-white'
                 }`}
               >
                 <img
                   src={ev.coverImage}
                   alt={ev.title}
-                  className="w-16 h-16 rounded-xl object-cover shrink-0 bg-gray-100"
+                  className="w-16 h-16 rounded-xl object-cover shrink-0 bg-slate-100"
                 />
                 <div className="flex-1 min-w-0 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-1">
-                      <span className="bg-purple-50 border border-purple-100 text-primary text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0">
+                      <span className="bg-amber-50 border border-amber-100 text-primary text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider shrink-0">
                         {ev.category}
                       </span>
                       {ev.spotsLeft <= 2 && ev.spotsLeft > 0 && (
@@ -150,17 +151,17 @@ const MapPage = () => {
                         </span>
                       )}
                     </div>
-                    <h3 className="font-extrabold text-xs text-gray-900 leading-snug mt-1 truncate">{ev.title}</h3>
-                    <p className="text-[10px] text-gray-400 mt-0.5">by {ev.organizer?.name}</p>
+                    <h3 className="font-extrabold text-xs text-[#3E2723] leading-snug mt-1 truncate">{ev.title}</h3>
+                    <p className="text-[10px] text-[#5D4037]/70 mt-0.5">by {ev.organizer?.name}</p>
                   </div>
                   
                   <div className="flex items-center justify-between gap-3 text-[10px] mt-2">
-                    <div className="flex items-center gap-3 text-gray-505 min-w-0">
-                      <span className="flex items-center gap-1 font-semibold shrink-0">
-                        <Users size={12} className="text-gray-400" /> {ev.spotsLeft} spots left
+                    <div className="flex items-center gap-3 text-slate-500 min-w-0">
+                      <span className="flex items-center gap-1 font-semibold text-[#5D4037] shrink-0">
+                        <Users size={12} className="text-[#5D4037]/50" /> {ev.spotsLeft} spots left
                       </span>
-                      <span className="truncate flex items-center gap-0.5">
-                        <MapPin size={10} className="text-gray-405 shrink-0" /> {ev.location.address.split(',')[0]}
+                      <span className="truncate flex items-center gap-0.5 text-[#5D4037]/75">
+                        <MapPin size={10} className="text-[#5D4037]/50 shrink-0" /> {ev.location.address.split(',')[0]}
                       </span>
                     </div>
                     {selectedEvent?._id === ev._id && (
@@ -187,10 +188,10 @@ const MapPage = () => {
         {/* Floating Locator Trigger */}
         <button
           onClick={locateUser}
-          className="absolute right-4 top-4 z-10 bg-white border border-gray-200 text-gray-600 p-3.5 rounded-full shadow-lg hover:bg-gray-50 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          className="absolute right-4 top-4 z-10 bg-[#FAF7F2] border border-[#E6DFD3] text-[#3E2723] p-3.5 rounded-full shadow-lg hover:bg-[#F4F0E8] hover:scale-105 active:scale-95 transition-all cursor-pointer"
           title="Locate my position"
         >
-          <Navigation size={18} className="fill-gray-600 text-gray-600" />
+          <Navigation size={18} className="fill-[#3E2723] text-[#3E2723]" />
         </button>
 
         {loading ? (

@@ -36,6 +36,10 @@ const Home = () => {
   // FAQ state
   const [openFaq, setOpenFaq] = useState(null);
 
+  // How it Works popup modal states
+  const [isHowItWorksOpen, setIsHowItWorksOpen] = useState(false);
+  const [modalTab, setModalTab] = useState('join');
+
   // Fetch events
   const fetchEvents = async () => {
     setLoading(true);
@@ -522,6 +526,184 @@ const Home = () => {
           <p className="mt-2 sm:mt-0">Made with ❤️ for local community builders.</p>
         </div>
       </footer>
+
+      {/* Floating Help Button (Bottom-Right) */}
+      <button
+        onClick={() => {
+          setModalTab('join');
+          setIsHowItWorksOpen(true);
+        }}
+        className="fixed bottom-6 right-6 z-40 bg-primary hover:bg-[#92400E] text-white shadow-xl shadow-amber-900/10 px-5 py-3.5 rounded-full flex items-center gap-2 font-bold text-xs cursor-pointer active:scale-95 transition-all animate-fade-in hover:shadow-2xl"
+      >
+        <HelpCircle size={16} />
+        <span>How it Works</span>
+      </button>
+
+      {/* How it Works Modal Popup */}
+      {isHowItWorksOpen && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-[#FAF7F2] border border-[#E6DFD3] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-slide-up flex flex-col max-h-[90vh]">
+            {/* Modal Header */}
+            <div className="p-6 pb-4 border-b border-[#E6DFD3] flex justify-between items-center bg-[#F4F0E8]/40 shrink-0">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-amber-50 rounded-xl flex items-center justify-center text-primary border border-amber-100">
+                  <Sparkles size={16} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-base text-[#3E2723]">How Get-To-Gather Works</h3>
+                  <p className="text-[10px] text-[#5D4037]/70">Everything you need to know to get started</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsHowItWorksOpen(false)}
+                className="w-8 h-8 bg-white border border-[#E6DFD3] hover:bg-[#FAF7F2] text-[#3E2723] rounded-full flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Navigation Tabs */}
+            <div className="flex border-b border-[#E6DFD3] bg-white shrink-0 text-xs select-none">
+              <button
+                onClick={() => setModalTab('join')}
+                className={`flex-1 py-3.5 text-center font-bold transition-all border-b-2 cursor-pointer ${
+                  modalTab === 'join'
+                    ? 'border-primary text-primary font-black bg-[#FAF7F2]/40'
+                    : 'border-transparent text-[#5D4037] hover:text-primary hover:bg-[#FAF7F2]/20'
+                }`}
+              >
+                👥 Joining
+              </button>
+              <button
+                onClick={() => setModalTab('host')}
+                className={`flex-1 py-3.5 text-center font-bold transition-all border-b-2 cursor-pointer ${
+                  modalTab === 'host'
+                    ? 'border-primary text-primary font-black bg-[#FAF7F2]/40'
+                    : 'border-transparent text-[#5D4037] hover:text-primary hover:bg-[#FAF7F2]/20'
+                }`}
+              >
+                ✨ Organizing
+              </button>
+              <button
+                onClick={() => setModalTab('credits')}
+                className={`flex-1 py-3.5 text-center font-bold transition-all border-b-2 cursor-pointer ${
+                  modalTab === 'credits'
+                    ? 'border-primary text-primary font-black bg-[#FAF7F2]/40'
+                    : 'border-transparent text-[#5D4037] hover:text-primary hover:bg-[#FAF7F2]/20'
+                }`}
+              >
+                🪙 Credit Economy
+              </button>
+            </div>
+
+            {/* Modal Body / Tab Content */}
+            <div className="p-6 overflow-y-auto flex-1 text-xs text-[#5D4037] leading-relaxed space-y-4">
+              {modalTab === 'join' && (
+                <>
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <Compass size={14} className="text-primary" /> 1. Discover Active Gatherings
+                    </h4>
+                    <p>
+                      Browse local coordinates on the interactive Map page or search by keyword and category directly on the landing page. Filter meetups happening near you within a custom range.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <Users size={14} className="text-primary" /> 2. Request Entry (RSVP)
+                    </h4>
+                    <p>
+                      Click on an event card to read the details, rules, and host info. Submit your join request. If the host approves you, you'll immediately unlock the location's precise coordinates and the WhatsApp coordination group link!
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <CheckCircle size={14} className="text-primary" /> 3. Attend Offline & Earn Score
+                    </h4>
+                    <p>
+                      Go to the offline location, meet the community, and let the host verify your presence via their dashboard. Check-ins boost your Reputation Score, which unlocks free Host Credits!
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {modalTab === 'host' && (
+                <>
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <Plus size={14} className="text-primary" /> 1. Consume 1 Host Credit
+                    </h4>
+                    <p>
+                      Hosting a meetup requires consuming exactly 1 Host Credit. This model ensures that listings remain authentic, preventing spam, coordinates abuse, or dead events.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <Search size={14} className="text-primary" /> 2. Define Parameters & Pin Coordinates
+                    </h4>
+                    <p>
+                      Fill in the host form: set the title, details, and participant limits. Use our map locator with predictive address suggestions to plot your gathering's coordinate pin.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-primary" /> 3. Select Guests & Mark Attendance
+                    </h4>
+                    <p>
+                      Manage entries inside your Organizer Console. You review applicants, approve guests, and mark attendance check-ins offline to trigger reputation points and keep coordinates secure.
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {modalTab === 'credits' && (
+                <>
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      🪙 Why a Credit System?
+                    </h4>
+                    <p>
+                      Traditional platforms suffer from automated organizer bots spamming coordinate listings. By requiring a token credit to launch any meetup, we protect local nodes and align host incentives.
+                    </p>
+                  </div>
+
+                  <div className="bg-white border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      📈 Earn Free Credits Through Presence
+                    </h4>
+                    <p>
+                      You don't need to purchase credits! Attending offline gatherings boosts your Reputation Score. Reaching milestones automatically converts your points into **free Host Credits**, allowing active attendees to seamlessly become meetup hosts.
+                    </p>
+                  </div>
+
+                  <div className="bg-[#EFECE3]/40 border border-[#E6DFD3] rounded-2xl p-4">
+                    <h4 className="font-extrabold text-[#3E2723] text-xs mb-1.5 flex items-center gap-1.5">
+                      🛡️ Verified Host Badges
+                    </h4>
+                    <p>
+                      Submit your official government ID through the dashboard to earn a Verified badge, boosting check-in rates and community credibility.
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-[#E6DFD3] bg-[#F4F0E8]/40 shrink-0 text-center">
+              <button
+                onClick={() => setIsHowItWorksOpen(false)}
+                className="bg-primary hover:bg-[#92400E] text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-all cursor-pointer"
+              >
+                Got it, thanks!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
