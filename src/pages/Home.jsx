@@ -114,9 +114,9 @@ const Home = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#B45309]/5 rounded-full blur-[100px] pointer-events-none select-none animate-float [animation-delay:2s]"></div>
 
         <div className="max-w-4xl mx-auto flex flex-col justify-center items-center gap-6 z-10">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none text-[#3E2723] max-w-4xl opacity-0 animate-hero-title [animation-fill-mode:forwards]">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-none text-[#3E2723] max-w-5xl opacity-0 animate-hero-title [animation-fill-mode:forwards]">
             Discover Real-World <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309] block mt-4 opacity-0 animate-hero-text-glow [animation-fill-mode:forwards]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309] block mt-3 text-3xl sm:text-4xl md:text-6xl whitespace-nowrap opacity-0 animate-hero-text-glow [animation-fill-mode:forwards]">
               Turn plans into memories.
             </span>
           </h1>
