@@ -4,23 +4,23 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import connectDB from './config/db.js';
-import errorHandler from './middleware/errorHandler.js';
+import connectDB from '../server/config/db.js';
+import errorHandler from '../server/middleware/errorHandler.js';
 
 // Route files
-import authRoutes from './routes/authRoutes.js';
-import eventRoutes from './routes/eventRoutes.js';
-import requestRoutes from './routes/requestRoutes.js';
-import attendanceRoutes from './routes/attendanceRoutes.js';
-import reviewRoutes from './routes/reviewRoutes.js';
-import creditRoutes from './routes/creditRoutes.js';
+import authRoutes from '../server/routes/authRoutes.js';
+import eventRoutes from '../server/routes/eventRoutes.js';
+import requestRoutes from '../server/routes/requestRoutes.js';
+import attendanceRoutes from '../server/routes/attendanceRoutes.js';
+import reviewRoutes from '../server/routes/reviewRoutes.js';
+import creditRoutes from '../server/routes/creditRoutes.js';
 
 dotenv.config();
 
 // Connect to database
 connectDB().then(() => {
   // Auto-seed if needed
-  import('./config/seedHelper.js').then(({ seedDB }) => {
+  import('../server/config/seedHelper.js').then(({ seedDB }) => {
     seedDB().catch(err => console.error('Auto-seed error:', err));
   });
 }).catch(err => {

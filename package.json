@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "server": "node api/server.js",
-    "seed": "node api/scripts/seed.js",
+    "seed": "node server/scripts/seed.js",
     "build": "vite build",
     "preview": "vite preview"
   },
