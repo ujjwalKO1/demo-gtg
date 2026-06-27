@@ -114,16 +114,18 @@ const Home = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#B45309]/5 rounded-full blur-[100px] pointer-events-none select-none animate-float [animation-delay:2s]"></div>
 
         <div className="max-w-4xl mx-auto flex flex-col justify-center items-center gap-6 z-10">
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-tight text-[#3E2723] max-w-4xl opacity-0 animate-slide-up">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none text-[#3E2723] max-w-4xl opacity-0 animate-hero-title [animation-fill-mode:forwards]">
             Discover Real-World <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309]">Get-To-Gather.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309] block mt-4 opacity-0 animate-hero-text-glow [animation-fill-mode:forwards]">
+              Turn plans into memories.
+            </span>
           </h1>
-          <p className="text-base md:text-lg text-[#5D4037] leading-relaxed max-w-2xl mt-2 opacity-0 animate-slide-up [animation-delay:200ms] [animation-fill-mode:forwards]">
+          <p className="text-base md:text-lg text-[#5D4037] leading-relaxed max-w-2xl mt-4 opacity-0 animate-slide-up [animation-delay:500ms] [animation-fill-mode:forwards]">
             Your one-stop destination for offline socializing. We support local communities to connect, share passions, and host gatherings seamlessly.
           </p>
           
           {/* Embedded Search Input directly on the Hero Opening Page */}
-          <div className="w-full max-w-lg mt-2 z-10 relative opacity-0 animate-slide-up [animation-delay:350ms] [animation-fill-mode:forwards]">
+          <div className="w-full max-w-lg mt-2 z-10 relative opacity-0 animate-slide-up [animation-delay:650ms] [animation-fill-mode:forwards]">
             <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-[#5D4037]/65">
               <Search size={18} />
             </span>
@@ -136,7 +138,7 @@ const Home = () => {
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 mt-4 justify-center opacity-0 animate-slide-up [animation-delay:500ms] [animation-fill-mode:forwards]">
+          <div className="flex flex-wrap items-center gap-4 mt-4 justify-center opacity-0 animate-slide-up [animation-delay:800ms] [animation-fill-mode:forwards]">
             <button
               onClick={() => navigate('/create')}
               className="bg-primary hover:bg-[#92400E] text-white font-bold text-sm px-9 py-4 rounded-xl transition-all shadow-lg shadow-amber-900/10 flex items-center gap-2 cursor-pointer active:scale-97"
@@ -153,7 +155,7 @@ const Home = () => {
         </div>
 
         {/* Floating Downward Arrow Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10 opacity-0 animate-fade-in [animation-delay:700ms] [animation-fill-mode:forwards]">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10 opacity-0 animate-fade-in [animation-delay:1000ms] [animation-fill-mode:forwards]">
           <span className="text-[10px] font-black text-[#5D4037] uppercase tracking-widest opacity-60">Scroll Down</span>
           <button
             onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })}
