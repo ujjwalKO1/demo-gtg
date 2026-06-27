@@ -121,7 +121,22 @@ const Home = () => {
           <p className="text-base md:text-lg text-[#5D4037] leading-relaxed max-w-2xl mt-2 opacity-0 animate-slide-up [animation-delay:200ms] [animation-fill-mode:forwards]">
             Your one-stop destination for offline socializing. We support local communities to connect, share passions, and host gatherings seamlessly.
           </p>
-          <div className="flex flex-wrap items-center gap-4 mt-6 justify-center opacity-0 animate-slide-up [animation-delay:400ms] [animation-fill-mode:forwards]">
+          
+          {/* Embedded Search Input directly on the Hero Opening Page */}
+          <div className="w-full max-w-lg mt-2 z-10 relative opacity-0 animate-slide-up [animation-delay:350ms] [animation-fill-mode:forwards]">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-[#5D4037]/65">
+              <Search size={18} />
+            </span>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search chess, code jams, football, music..."
+              className="w-full bg-[#FAF7F2]/90 border border-[#E6DFD3] rounded-2xl pl-11 pr-4 py-4 text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all font-medium text-[#3E2723] placeholder-[#5D4037]/50 shadow-md"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 mt-4 justify-center opacity-0 animate-slide-up [animation-delay:500ms] [animation-fill-mode:forwards]">
             <button
               onClick={() => navigate('/create')}
               className="bg-primary hover:bg-[#92400E] text-white font-bold text-sm px-9 py-4 rounded-xl transition-all shadow-lg shadow-amber-900/10 flex items-center gap-2 cursor-pointer active:scale-97"
@@ -138,7 +153,7 @@ const Home = () => {
         </div>
 
         {/* Floating Downward Arrow Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10 opacity-0 animate-fade-in [animation-delay:600ms] [animation-fill-mode:forwards]">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10 opacity-0 animate-fade-in [animation-delay:700ms] [animation-fill-mode:forwards]">
           <span className="text-[10px] font-black text-[#5D4037] uppercase tracking-widest opacity-60">Scroll Down</span>
           <button
             onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })}

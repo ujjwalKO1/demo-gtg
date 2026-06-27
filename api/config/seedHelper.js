@@ -107,7 +107,7 @@ export const seedDB = async () => {
         title: 'UNO & Board Games in Cubbon Park',
         description: 'Join us for a casual Sunday evening under the trees at Cubbon Park. We will be playing UNO, Catan, and Exploding Kittens. Bring your own snacks and a picnic mat if you can! Suitable for anyone looking to meet cool folks.',
         category: 'Social',
-        coverImage: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80',
+        coverImage: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80',
         dateTime: tomorrow,
         location: {
           address: 'Cubbon Park, Near Metro Station, Bangalore',
@@ -124,7 +124,7 @@ export const seedDB = async () => {
         title: 'Vite & Tailwind v4 Hack Night',
         description: 'Calling all frontend devs in Koramangala! We are hosting a mini-hackathon to build responsive mobile widgets with Vite & Tailwind CSS v4. Bring your laptop, charger, and coding ideas. Pizza & coffee are on us!',
         category: 'Tech',
-        coverImage: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=800&q=80',
+        coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
         dateTime: nextWeek,
         location: {
           address: 'Koramangala 5th Block Tech Hub, Bangalore',
@@ -141,7 +141,7 @@ export const seedDB = async () => {
         title: '7v7 Football Match (Sunday Morning)',
         description: 'Need two midfielders and a goalkeeper for our weekly morning session. High intensity but friendly game. Booking cost will be split equally. Studs are compulsory on the turf.',
         category: 'Sports',
-        coverImage: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80',
+        coverImage: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80',
         dateTime: matchDate,
         location: {
           address: 'Indiranagar Football Turf, Bangalore',
@@ -158,7 +158,7 @@ export const seedDB = async () => {
         title: 'Acoustic Jam Session at Third Wave Coffee',
         description: 'Bring your acoustic guitars, ukes, cajons, or just your vocal cords! We are jamming to 90s rock, indie pop, and Bollywood classics. Buying a beverage at the cafe is recommended.',
         category: 'Music',
-        coverImage: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+        coverImage: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80',
         dateTime: jamDate,
         location: {
           address: 'Third Wave Coffee, Lavelle Road, Bangalore',
