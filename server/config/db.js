@@ -41,7 +41,12 @@ const connectDB = async () => {
     }
 
     // Fallback: Start in-memory MongoDB server
-    const { MongoMemoryServer } = await import('mongodb-memory-server');
+    if (process.env.VERCEL) {
+      throw new Error('MONGODB_URI environment variable is missing. Please set it in your Vercel project environment variables to connect to your database.');
+    }
+
+    const pkg = 'mongodb-memory-server';
+    const { MongoMemoryServer } = await import(pkg);
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
     console.log(`In-memory MongoDB Server started at: ${uri}`);
