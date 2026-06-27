@@ -103,41 +103,42 @@ const Home = () => {
   return (
     <div className="flex-grow bg-[#FAF7F2] text-[#3E2723] pb-0 overflow-y-auto relative min-h-screen">
       {/* Full-Screen Widescreen Hero Banner (Warm Earthy Tones & Centered Layout) */}
-      <section className="min-h-[calc(100vh-70px)] bg-gradient-to-b from-[#FAF7F2] to-[#EFECE3] flex flex-col justify-center items-center px-6 relative text-center">
+      <section className="min-h-[calc(100vh-70px)] bg-gradient-to-b from-[#FAF7F2] to-[#EFECE3] flex flex-col justify-center items-center px-6 relative text-center overflow-hidden">
         {/* Subtle decorative pattern */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none">
           <div className="w-full h-full bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]"></div>
         </div>
 
+        {/* Ambient earthy glows with floating animation */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none select-none animate-float"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#B45309]/5 rounded-full blur-[100px] pointer-events-none select-none animate-float [animation-delay:2s]"></div>
+
         <div className="max-w-4xl mx-auto flex flex-col justify-center items-center gap-6 z-10">
-          <span className="bg-[#78350F]/10 border border-[#78350F]/20 text-[#78350F] text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest select-none">
-            🔥 Start hosting locally
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight text-[#3E2723] max-w-3xl">
+          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-tight text-[#3E2723] max-w-4xl opacity-0 animate-slide-up">
             Discover Real-World <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309]">Get-To-Gather.</span>
           </h1>
-          <p className="text-sm md:text-base text-[#5D4037] leading-relaxed max-w-2xl mt-2">
-            Get-To-Gather links you with local events of any scale. Host board game sessions in parks, Tech code hacks, 7v7 football matches, or acoustic music jams in your city.
+          <p className="text-base md:text-lg text-[#5D4037] leading-relaxed max-w-2xl mt-2 opacity-0 animate-slide-up [animation-delay:200ms] [animation-fill-mode:forwards]">
+            Your one-stop destination for offline socializing. We support local communities to connect, share passions, and host gatherings seamlessly.
           </p>
-          <div className="flex flex-wrap items-center gap-4 mt-6 justify-center">
+          <div className="flex flex-wrap items-center gap-4 mt-6 justify-center opacity-0 animate-slide-up [animation-delay:400ms] [animation-fill-mode:forwards]">
             <button
               onClick={() => navigate('/create')}
-              className="bg-primary hover:bg-[#92400E] text-white font-bold text-sm px-8 py-4 rounded-xl transition-all shadow-lg shadow-amber-900/10 flex items-center gap-2 cursor-pointer active:scale-97"
+              className="bg-primary hover:bg-[#92400E] text-white font-bold text-sm px-9 py-4 rounded-xl transition-all shadow-lg shadow-amber-900/10 flex items-center gap-2 cursor-pointer active:scale-97"
             >
-              <Plus size={18} strokeWidth={2.5} /> Host Getogather
+              <Plus size={18} strokeWidth={2.5} /> Host Gathering
             </button>
             <button
               onClick={() => navigate('/map')}
-              className="bg-transparent hover:bg-primary/5 text-primary border border-primary/30 font-bold text-sm px-8 py-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-97"
+              className="bg-transparent hover:bg-primary/5 text-primary border border-primary/30 font-bold text-sm px-9 py-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-97"
             >
-              <Compass size={18} /> Explore Map
+              <Compass size={18} /> Join Gatherings
             </button>
           </div>
         </div>
 
         {/* Floating Downward Arrow Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10 opacity-0 animate-fade-in [animation-delay:600ms] [animation-fill-mode:forwards]">
           <span className="text-[10px] font-black text-[#5D4037] uppercase tracking-widest opacity-60">Scroll Down</span>
           <button
             onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })}
