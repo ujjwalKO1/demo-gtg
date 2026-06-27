@@ -1,36 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0D9488;
-  --color-primary-dark: #0F766E;
-  --color-primary-light: #CCFBF1;
-  --color-accent-sports: #10B981;
-  --color-accent-tech: #3B82F6;
-  --color-accent-social: #F59E0B;
-  --color-accent-food: #EF4444;
-  --color-accent-music: #0D9488;
-  --color-accent-art: #EC4899;
+  --color-primary: #78350F;
+  --color-primary-dark: #5C2D12;
+  --color-primary-light: #FDFBF7;
+  --color-accent-sports: #166534;
+  --color-accent-tech: #0369A1;
+  --color-accent-social: #B45309;
+  --color-accent-food: #9A3412;
+  --color-accent-music: #78350F;
+  --color-accent-art: #9D174D;
 
-  /* Redirect purple to professional teal */
-  --color-purple-50: #F0FDFA;
-  --color-purple-100: #CCFBF1;
-  --color-purple-150: #CCFBF1;
-  --color-purple-200: #99F6E4;
-  --color-purple-300: #5EEAD4;
-  --color-purple-400: #2DD4BF;
-  --color-purple-550: #0F766E;
-  --color-purple-500: #14B8A6;
-  --color-purple-600: #0D9488;
-  --color-purple-650: #0F766E;
-  --color-purple-700: #115E59;
-  --color-purple-800: #134E4A;
-  --color-purple-900: #042F2E;
+  /* Redirect purple to professional earthy beige/sand/brown */
+  --color-purple-50: #FAF7F2;   /* Alabaster Warm Beige */
+  --color-purple-100: #F4F0E8;  /* Sand Beige */
+  --color-purple-150: #EFECE3;  /* Warm Sand */
+  --color-purple-200: #EAE5D9;  /* Deep Sand */
+  --color-purple-300: #D9D2C4;  /* Clay Sand */
+  --color-purple-400: #B45309;  /* Amber-700 / terracotta */
+  --color-purple-550: #78350F;  /* Amber-900 / dark clay */
+  --color-purple-500: #92400E;  /* Amber-800 */
+  --color-purple-600: #78350F;  /* Amber-900 */
+  --color-purple-650: #5C2D12;  /* Terracotta dark */
+  --color-purple-700: #451A03;  /* Espresso/brown dark */
+  --color-purple-800: #291002;  /* Espresso very dark */
+  --color-purple-900: #1C0A00;  /* Near black espresso */
 }
 
 @layer base {
   body {
-    background-color: #F8FAFC;
-    color: #0F172A;
+    background-color: #FAF7F2;
+    color: #3E2723;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }

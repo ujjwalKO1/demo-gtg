@@ -8,15 +8,15 @@ import {
 } from 'lucide-react';
 
 const CATEGORIES = [
-  { name: 'All', emoji: '🔍' },
-  { name: 'Social', emoji: '🎉' },
-  { name: 'Tech', emoji: '💻' },
-  { name: 'Sports', emoji: '⚽' },
-  { name: 'Music', emoji: '🎵' },
-  { name: 'Food', emoji: '🍕' },
-  { name: 'Art', emoji: '🎨' },
-  { name: 'Study', emoji: '📚' },
-  { name: 'Gaming', emoji: '🎮' }
+  { name: 'All' },
+  { name: 'Social' },
+  { name: 'Tech' },
+  { name: 'Sports' },
+  { name: 'Music' },
+  { name: 'Food' },
+  { name: 'Art' },
+  { name: 'Study' },
+  { name: 'Gaming' }
 ];
 
 const Home = () => {
@@ -101,121 +101,92 @@ const Home = () => {
   };
 
   return (
-    <div className="flex-grow bg-slate-950 text-slate-100 pb-0 overflow-y-auto relative min-h-screen">
-      {/* Glow Blobs Background */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none select-none"></div>
-      <div className="absolute top-[30%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none select-none"></div>
-      <div className="absolute bottom-[10%] left-[20%] w-[35%] h-[35%] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none select-none"></div>
-
-      {/* Restored Split Hero Layout with Dark Glassmorphism (No Metrics stats card) */}
-      <div className="max-w-7xl mx-auto px-6 mt-8 mb-10">
-        <div className="relative bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 overflow-hidden shadow-2xl flex flex-col md:flex-row justify-between items-center gap-12">
-          {/* Subtle Grid Overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none select-none">
-            <div className="w-full h-full bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
-          </div>
-
-          <div className="flex-1 text-center md:text-left z-10">
-            <span className="inline-flex items-center gap-1.5 bg-teal-950/40 border border-teal-900/50 text-teal-300 text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest select-none mb-6 animate-pulse-slow">
-              <Sparkles size={12} className="fill-teal-300/10" /> Physical Connection Reimagined
-            </span>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-              Discover Passionate <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-400">Local Gatherings.</span>
-            </h1>
-            <p className="text-sm md:text-base text-slate-350 mt-5 leading-relaxed max-w-xl mx-auto md:mx-0">
-              Get-To-Gather is a local meetup platform designed for physical activities. 
-              Find chess tables, coding circles, football games, or acoustic music jams 
-              happening directly in your neighborhood.
-            </p>
-            
-            <div className="flex flex-wrap items-center gap-4 mt-8 justify-center md:justify-start">
-              <button
-                onClick={() => navigate('/map')}
-                className="bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs px-6.5 py-3.5 rounded-xl transition-all shadow-lg shadow-teal-500/10 flex items-center gap-2 cursor-pointer active:scale-97"
-              >
-                <Compass size={16} /> Explore Interactive Map
-              </button>
-              <button
-                onClick={() => navigate('/create')}
-                className="bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold text-xs px-6.5 py-3.5 rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-97"
-              >
-                <Plus size={16} /> Host a Gathering
-              </button>
-            </div>
-          </div>
-
-          {/* Restored split side - Showing a floating glass card preview of a live event instead of active metrics */}
-          <div className="hidden lg:flex flex-1 justify-center items-center z-10 relative">
-            <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 p-6.5 rounded-3xl w-80 shadow-2xl relative animate-float hover:scale-105 transition-all duration-300">
-              <div className="absolute -top-3 -right-3 bg-teal-500 text-slate-950 text-[10px] font-black uppercase px-3 py-1 rounded-xl shadow-md">
-                Tonight
-              </div>
-              <span className="text-[10px] font-black text-teal-400 uppercase tracking-widest block mb-1">Acoustic Jam Session</span>
-              <h3 className="font-extrabold text-base text-white">Cubbon Park Guitar Club</h3>
-              
-              <div className="mt-4 space-y-2 text-xs text-slate-400">
-                <p className="flex items-center gap-2">
-                  <MapPin size={14} className="text-teal-400" />
-                  <span>Bangalore, India</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Calendar size={14} className="text-teal-400" />
-                  <span>7:30 PM • 3 km away</span>
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-slate-800 flex justify-between items-center text-[10px] text-slate-400">
-                <span className="bg-slate-850 px-2.5 py-1 rounded-md">Music & Social</span>
-                <span className="text-teal-400 font-bold">5 spots left</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Discover Layout (Events, Search & Filters) */}
-      <div className="content-container z-10 relative">
-        <div className="mb-6">
-          <h2 className="text-2xl font-black text-white tracking-tight">Search Neighborhood Events</h2>
-          <p className="text-xs text-slate-400 mt-1">Filter events by coordinates, keyword queries, or categories</p>
+    <div className="flex-grow bg-[#FAF7F2] text-[#3E2723] pb-0 overflow-y-auto relative min-h-screen">
+      {/* Full-Screen Widescreen Hero Banner (Warm Earthy Tones & Centered Layout) */}
+      <section className="min-h-[calc(100vh-70px)] bg-gradient-to-b from-[#FAF7F2] to-[#EFECE3] flex flex-col justify-center items-center px-6 relative text-center">
+        {/* Subtle decorative pattern */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none select-none">
+          <div className="w-full h-full bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]"></div>
         </div>
 
-        {/* Search, filters, slider range controls (Glassmorphism styling) */}
-        <div className="bg-white/[0.03] backdrop-blur-lg border border-white/10 rounded-3xl p-5 mb-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex-1 flex flex-col sm:flex-row gap-3">
-            {/* Search Input */}
-            <div className="relative flex-1">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                <Search size={16} />
-              </span>
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search games, tech meetups, sports, jams..."
-                className="w-full bg-white/[0.02] border border-white/10 rounded-2xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500 transition-all font-medium text-white placeholder-slate-400"
-              />
-            </div>
-
-            {/* Geolocation Button */}
+        <div className="max-w-4xl mx-auto flex flex-col justify-center items-center gap-6 z-10">
+          <span className="bg-[#78350F]/10 border border-[#78350F]/20 text-[#78350F] text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest select-none">
+            🔥 Start hosting locally
+          </span>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight text-[#3E2723] max-w-3xl">
+            Discover Real-World <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309]">Get-To-Gather.</span>
+          </h1>
+          <p className="text-sm md:text-base text-[#5D4037] leading-relaxed max-w-2xl mt-2">
+            Get-To-Gather links you with local events of any scale. Host board game sessions in parks, Tech code hacks, 7v7 football matches, or acoustic music jams in your city.
+          </p>
+          <div className="flex flex-wrap items-center gap-4 mt-6 justify-center">
             <button
-              onClick={handleNearMeToggle}
-              className={`px-5 py-3 rounded-2xl border font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
-                nearMeActive
-                  ? 'bg-primary text-white border-primary shadow-md shadow-primary/20'
-                  : 'bg-white/[0.02] text-slate-350 border-white/10 hover:bg-white/10'
-              }`}
+              onClick={() => navigate('/create')}
+              className="bg-primary hover:bg-[#92400E] text-white font-bold text-sm px-8 py-4 rounded-xl transition-all shadow-lg shadow-amber-900/10 flex items-center gap-2 cursor-pointer active:scale-97"
             >
-              <Navigation size={14} className={nearMeActive ? 'fill-white' : ''} />
-              <span>Near Me</span>
+              <Plus size={18} strokeWidth={2.5} /> Host Getogather
+            </button>
+            <button
+              onClick={() => navigate('/map')}
+              className="bg-transparent hover:bg-primary/5 text-primary border border-primary/30 font-bold text-sm px-8 py-4 rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-97"
+            >
+              <Compass size={18} /> Explore Map
             </button>
           </div>
+        </div>
+
+        {/* Floating Downward Arrow Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none z-10">
+          <span className="text-[10px] font-black text-[#5D4037] uppercase tracking-widest opacity-60">Scroll Down</span>
+          <button
+            onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })}
+            className="w-10 h-10 bg-white border border-[#E6DFD3] hover:bg-[#F4F0E8] rounded-full flex items-center justify-center text-primary shadow-xs hover:shadow-md transition-all cursor-pointer animate-float"
+          >
+            <ArrowRight size={18} className="rotate-90" />
+          </button>
+        </div>
+      </section>
+
+      {/* Main Discover Layout (Events, Search & Filters) */}
+      <div id="discover" className="content-container py-16 scroll-mt-12">
+        {/* Prominent Search Bar (Above the Box) */}
+        <div className="mb-8 max-w-2xl mx-auto text-center">
+          <h2 className="text-2xl font-extrabold text-[#3E2723] tracking-tight">Search Neighborhood Events</h2>
+          <p className="text-xs text-[#5D4037] mt-1 mb-4">Find active sports, games, jams, and circles in your neighborhood</p>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-[#5D4037]/65">
+              <Search size={18} />
+            </span>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search chess, code jams, football, music..."
+              className="w-full bg-[#F4F0E8] border border-[#E6DFD3] rounded-2xl pl-11 pr-4 py-4 text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all font-medium text-[#3E2723] placeholder-[#5D4037]/50 shadow-sm"
+            />
+          </div>
+        </div>
+
+        {/* The Controls Box (Sits below the search, styled in distinct warm sand colors) */}
+        <div className="bg-[#EFECE3] border border-[#E6DFD3] rounded-3xl p-5 mb-8 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 max-w-2xl mx-auto">
+          {/* Geolocation Button */}
+          <button
+            onClick={handleNearMeToggle}
+            className={`px-5 py-3 rounded-2xl border font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 ${
+              nearMeActive
+                ? 'bg-primary text-white border-primary shadow-md shadow-amber-900/10'
+                : 'bg-[#F4F0E8] text-[#5D4037] border-[#E6DFD3] hover:bg-[#FAF7F2]'
+            }`}
+          >
+            <Navigation size={14} className={nearMeActive ? 'fill-white' : ''} />
+            <span>Search Near Me</span>
+          </button>
 
           {/* Location Range Slider */}
           {nearMeActive && userCoords && (
-            <div className="bg-teal-950/20 border border-teal-900/40 px-4 py-3 rounded-2xl flex flex-col gap-1 w-full md:w-72 shrink-0">
-              <div className="flex justify-between items-center text-[10px] font-extrabold text-teal-400 uppercase">
+            <div className="bg-[#FAF7F2] border border-[#E6DFD3] px-4 py-3 rounded-2xl flex flex-col gap-1 flex-grow">
+              <div className="flex justify-between items-center text-[10px] font-extrabold text-primary uppercase">
                 <span>Search Range:</span>
                 <span>{radius} km</span>
               </div>
@@ -225,7 +196,7 @@ const Home = () => {
                 max="50"
                 value={radius}
                 onChange={(e) => setRadius(parseInt(e.target.value))}
-                className="w-full h-1 bg-teal-900 rounded-lg appearance-none cursor-pointer accent-teal-400"
+                className="w-full h-1 bg-[#EAE5D9] rounded-lg appearance-none cursor-pointer accent-primary"
               />
             </div>
           )}
@@ -238,13 +209,12 @@ const Home = () => {
               <button
                 key={cat.name}
                 onClick={() => setActiveCategory(cat.name)}
-                className={`flex items-center gap-1.5 px-4.5 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all border cursor-pointer ${
+                className={`flex items-center gap-1.5 px-5 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all border cursor-pointer ${
                   activeCategory === cat.name
-                    ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-lg shadow-teal-500/10'
-                    : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-primary text-white border-primary shadow-md'
+                    : 'bg-white text-[#5D4037] border-[#E6DFD3] hover:bg-[#FAF7F2]'
                 }`}
               >
-                <span>{cat.emoji}</span>
                 <span>{cat.name}</span>
               </button>
             ))}
@@ -254,19 +224,19 @@ const Home = () => {
         {/* Render Lists */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-4 text-xs text-slate-400 font-bold">Querying gatherings...</p>
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-xs text-[#5D4037] font-bold">Querying gatherings...</p>
           </div>
         ) : events.length === 0 ? (
-          <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-12 text-center max-w-md mx-auto shadow-xs">
+          <div className="bg-white border border-[#E6DFD3] rounded-3xl p-12 text-center max-w-md mx-auto shadow-xs">
             <span className="text-4xl">💤</span>
-            <h3 className="font-extrabold text-white text-base mt-4">No events found</h3>
-            <p className="text-xs text-slate-400 mt-2 mb-6 leading-relaxed">
+            <h3 className="font-extrabold text-[#3E2723] text-base mt-4">No events found</h3>
+            <p className="text-xs text-[#5D4037] mt-2 mb-6 leading-relaxed">
               No gatherings found for "{activeCategory}" matching your keywords. Create a new one to invite others!
             </p>
             <button
               onClick={() => navigate('/create')}
-              className="bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md cursor-pointer"
+              className="bg-primary hover:bg-[#92400E] text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md cursor-pointer"
             >
               Start Event Group
             </button>
@@ -276,12 +246,12 @@ const Home = () => {
             {/* Trending sliders */}
             {!search && activeCategory === 'All' && trendingEvents.length > 0 && (
               <div>
-                <h3 className="text-xs font-black text-teal-400 uppercase tracking-widest flex items-center gap-1.5 mb-4 font-sans">
-                  <Sparkles size={14} className="text-teal-400 fill-teal-400/10" /> Trending Meetups
+                <h3 className="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1.5 mb-4 font-sans">
+                  <Sparkles size={14} className="text-primary fill-primary/10" /> Trending Meetups
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {trendingEvents.slice(0, 4).map((event) => (
-                    <EventCard key={event._id} event={event} isDark={true} />
+                    <EventCard key={event._id} event={event} isDark={false} />
                   ))}
                 </div>
               </div>
@@ -289,13 +259,13 @@ const Home = () => {
 
             {/* Main grid catalog */}
             <div className="mb-16">
-              <h3 className="text-xs font-black text-teal-400 uppercase tracking-widest flex items-center gap-1.5 mb-4 font-sans">
-                <Calendar size={14} className="text-teal-400" /> 
+              <h3 className="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1.5 mb-4 font-sans">
+                <Calendar size={14} className="text-primary" /> 
                 {search || activeCategory !== 'All' || nearMeActive ? 'All Search Results' : 'Recommended Meetups'}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {events.map((event) => (
-                  <EventCard key={event._id} event={event} isDark={true} />
+                  <EventCard key={event._id} event={event} isDark={false} />
                 ))}
               </div>
             </div>
@@ -303,53 +273,53 @@ const Home = () => {
         )}
       </div>
 
-      {/* How it Works Section (Glassmorphism layout) */}
-      <section className="bg-white/[0.01] border-t border-b border-white/5 py-16 px-6 relative">
+      {/* How it Works Section */}
+      <section className="bg-white border-t border-b border-[#E6DFD3] py-16 px-6 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-3xl font-extrabold text-white tracking-tight">How Get-To-Gather Works</h2>
-            <p className="text-sm text-slate-400 leading-relaxed mt-3">
+            <h2 className="text-3xl font-extrabold text-[#3E2723] tracking-tight">How Get-To-Gather Works</h2>
+            <p className="text-sm text-[#5D4037] leading-relaxed mt-3">
               We align guest incentives with host privileges, cultivating active, trust-centered local chapters.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="bg-white/[0.02] border border-white/10 p-6 rounded-3xl relative text-center hover:border-teal-500/30 transition-all duration-300">
-              <div className="w-12 h-12 bg-teal-950/40 text-teal-300 rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-teal-900/50 shadow-sm">
+            <div className="bg-[#FAF7F2] border border-[#E6DFD3] p-6 rounded-3xl relative text-center hover:border-primary/30 transition-all duration-300 shadow-3xs">
+              <div className="w-12 h-12 bg-amber-50 text-primary rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-amber-100 shadow-sm">
                 1
               </div>
-              <h3 className="font-extrabold text-sm text-white">Browse Map</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mt-2">
+              <h3 className="font-extrabold text-sm text-[#3E2723]">Browse Map</h3>
+              <p className="text-xs text-[#5D4037] leading-relaxed mt-2">
                 Open the interactive coordinates map to locate active sports, gaming, and tech gatherings near you.
               </p>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 p-6 rounded-3xl relative text-center hover:border-teal-500/30 transition-all duration-300">
-              <div className="w-12 h-12 bg-teal-950/40 text-teal-300 rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-teal-900/50 shadow-sm">
+            <div className="bg-[#FAF7F2] border border-[#E6DFD3] p-6 rounded-3xl relative text-center hover:border-primary/30 transition-all duration-300 shadow-3xs">
+              <div className="w-12 h-12 bg-amber-50 text-primary rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-amber-100 shadow-sm">
                 2
               </div>
-              <h3 className="font-extrabold text-sm text-white">Request Entry</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mt-2">
+              <h3 className="font-extrabold text-sm text-[#3E2723]">Request Entry</h3>
+              <p className="text-xs text-[#5D4037] leading-relaxed mt-2">
                 Submit an RSVP. Hosts evaluate check-in records and verified profiles to select community members.
               </p>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 p-6 rounded-3xl relative text-center hover:border-teal-500/30 transition-all duration-300">
-              <div className="w-12 h-12 bg-teal-950/40 text-teal-300 rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-teal-900/50 shadow-sm">
+            <div className="bg-[#FAF7F2] border border-[#E6DFD3] p-6 rounded-3xl relative text-center hover:border-primary/30 transition-all duration-300 shadow-3xs">
+              <div className="w-12 h-12 bg-amber-50 text-primary rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-amber-100 shadow-sm">
                 3
               </div>
-              <h3 className="font-extrabold text-sm text-white">Attend Offline</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mt-2">
+              <h3 className="font-extrabold text-sm text-[#3E2723]">Attend Offline</h3>
+              <p className="text-xs text-[#5D4037] leading-relaxed mt-2">
                 Go to the resolved coordinates. Meet neighbors and check in to boost your local reputation score.
               </p>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 p-6 rounded-3xl relative text-center hover:border-teal-500/30 transition-all duration-300">
-              <div className="w-12 h-12 bg-teal-950/40 text-teal-300 rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-teal-900/50 shadow-sm">
+            <div className="bg-[#FAF7F2] border border-[#E6DFD3] p-6 rounded-3xl relative text-center hover:border-primary/30 transition-all duration-300 shadow-3xs">
+              <div className="w-12 h-12 bg-amber-50 text-primary rounded-full flex items-center justify-center font-black text-sm mx-auto mb-4 border border-amber-100 shadow-sm">
                 4
               </div>
-              <h3 className="font-extrabold text-sm text-white">Earn Free Tokens</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mt-2">
+              <h3 className="font-extrabold text-sm text-[#3E2723]">Earn Free Tokens</h3>
+              <p className="text-xs text-[#5D4037] leading-relaxed mt-2">
                 Redeem your score milestones for free Host Credits, transforming from attendee into meetup creator.
               </p>
             </div>
@@ -361,11 +331,11 @@ const Home = () => {
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-extrabold text-white tracking-tight leading-snug">
+            <h2 className="text-3xl font-extrabold text-[#3E2723] tracking-tight leading-snug">
               Creating Safe, Accountable, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-400">Spam-Free Local Nodes</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#B45309]">Spam-Free Local Nodes</span>
             </h2>
-            <p className="text-sm text-slate-450 mt-4 leading-relaxed">
+            <p className="text-sm text-[#5D4037] mt-4 leading-relaxed">
               Meeting strangers in offline spaces carries safety and accountability hurdles. 
               Our platform mechanics solve this using automated verification, anti-spam tokens, 
               and community reputations.
@@ -373,36 +343,36 @@ const Home = () => {
 
             <div className="mt-8 space-y-4">
               <div className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-950/30 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-900/30">
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100">
                   <CheckCircle size={16} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-white">Verify Identity with Government ID</h4>
-                  <p className="text-xs text-slate-450 mt-1">
+                  <h4 className="font-bold text-sm text-[#3E2723]">Verify Identity with Government ID</h4>
+                  <p className="text-xs text-[#5D4037] mt-1">
                     Hosts link their official identification through secure portals, earning a visible Verified Host badge.
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-teal-950/30 text-teal-400 flex items-center justify-center shrink-0 border border-teal-900/30">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 text-primary flex items-center justify-center shrink-0 border border-amber-100">
                   <CheckCircle size={16} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-white">Token Cost Restricts Coordinator Spam</h4>
-                  <p className="text-xs text-slate-455 mt-1">
+                  <h4 className="font-bold text-sm text-[#3E2723]">Token Cost Restricts Coordinator Spam</h4>
+                  <p className="text-xs text-[#5D4037] mt-1">
                     Every gathering requires consuming exactly 1 Host Credit, ensuring coordinate slots remain clean and authentic.
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-950/30 text-amber-400 flex items-center justify-center shrink-0 border border-amber-900/30">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 text-primary flex items-center justify-center shrink-0 border border-amber-100">
                   <CheckCircle size={16} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-white">Reputation Boosts for Present Attendees</h4>
-                  <p className="text-xs text-slate-455 mt-1">
+                  <h4 className="font-bold text-sm text-[#3E2723]">Reputation Boosts for Present Attendees</h4>
+                  <p className="text-xs text-[#5D4037] mt-1">
                     Hosts verify presence offline via digital check-in sheets. Successful attendance builds community reputation.
                   </p>
                 </div>
@@ -410,16 +380,16 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Redesigned reasoning quote card (Removed Vikram Malhotra's name and profile, kept quote text) */}
-          <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden shadow-xl">
-            <div className="absolute top-4 right-4 text-teal-500/10 pointer-events-none">
+          {/* Redesigned reasoning quote card (Removed Vikram's details, kept quote text) */}
+          <div className="bg-white border border-[#E6DFD3] rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden shadow-sm">
+            <div className="absolute top-4 right-4 text-[#78350F]/5 pointer-events-none">
               <Quote size={80} strokeWidth={4} />
             </div>
             
-            <h3 className="font-extrabold text-white text-lg mb-4 flex items-center gap-2 z-10">
-              <Sparkles size={16} className="text-teal-400" /> Why We Built Get-To-Gather
+            <h3 className="font-extrabold text-[#3E2723] text-lg mb-4 flex items-center gap-2 z-10">
+              <Sparkles size={16} className="text-primary" /> Why We Built Get-To-Gather
             </h3>
-            <blockquote className="border-l-4 border-teal-500 pl-4 text-sm text-slate-300 italic leading-relaxed z-10">
+            <blockquote className="border-l-4 border-primary pl-4 text-sm text-[#5D4037] italic leading-relaxed z-10">
               "We live in the most digitally connected era in human history, yet study after study shows record-high loneliness rates. 
               Online networks feed endless feeds but fail to facilitate actual, face-to-face meetups. Get-To-Gather is here to change that 
               by matching people by passion, allowing them to do what they actually like, rather than just what they can."
@@ -429,14 +399,14 @@ const Home = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-white/[0.01] border-t border-white/5 py-16 px-6">
+      <section className="bg-[#FAF7F2] border-t border-[#E6DFD3] py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <span className="text-teal-300 text-xs font-bold uppercase tracking-wider bg-teal-950/40 border border-teal-900/50 px-3 py-1 rounded-full">
+            <span className="text-primary text-xs font-bold uppercase tracking-wider bg-amber-50 border border-amber-100 px-3 py-1 rounded-full">
               FAQs
             </span>
-            <h2 className="text-3xl font-extrabold text-white tracking-tight mt-3">Frequently Asked Questions</h2>
-            <p className="text-xs text-slate-400 mt-1">Got questions? We've got answers.</p>
+            <h2 className="text-3xl font-extrabold text-[#3E2723] tracking-tight mt-3">Frequently Asked Questions</h2>
+            <p className="text-xs text-[#5D4037] mt-1">Got questions? We've got answers.</p>
           </div>
 
           <div className="space-y-4">
@@ -460,17 +430,17 @@ const Home = () => {
             ].map((faq, index) => (
               <div 
                 key={index} 
-                className="bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden transition-all duration-200"
+                className="bg-white border border-[#E6DFD3] rounded-2xl overflow-hidden transition-all duration-200"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full text-left px-6 py-4.5 font-bold text-xs text-slate-200 flex justify-between items-center focus:outline-none hover:bg-white/5"
+                  className="w-full text-left px-6 py-4.5 font-bold text-xs text-[#3E2723] flex justify-between items-center focus:outline-none hover:bg-slate-50/50"
                 >
                   <span>{faq.q}</span>
-                  <HelpCircle size={16} className={`text-slate-400 transition-transform ${openFaq === index ? 'rotate-180 text-teal-400' : ''}`} />
+                  <HelpCircle size={16} className={`text-slate-400 transition-transform ${openFaq === index ? 'rotate-180 text-primary' : ''}`} />
                 </button>
                 {openFaq === index && (
-                  <div className="px-6 pb-5 border-t border-white/5 pt-3 text-xs text-slate-450 leading-relaxed bg-white/[0.01]">
+                  <div className="px-6 pb-5 border-t border-white/5 pt-3 text-xs text-[#5D4037] leading-relaxed bg-slate-50/25">
                     {faq.a}
                   </div>
                 )}
@@ -480,56 +450,56 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Professional Footer */}
-      <footer className="bg-slate-950 text-slate-400 border-t border-white/5 py-12 px-6">
+      {/* Professional Footer (Matching Earthy Theme Colors) */}
+      <footer className="bg-[#EFECE3] text-[#5D4037] border-t border-[#E6DFD3] py-12 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <span className="text-xl font-black text-white tracking-tight flex items-center gap-1.5 mb-4 select-none">
-              Get-To-Gather<span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+            <span className="text-xl font-black text-[#3E2723] tracking-tight flex items-center gap-1.5 mb-4 select-none">
+              Get-To-Gather<span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
             </span>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
+            <p className="text-[11px] text-[#5D4037] leading-relaxed">
               Rebuilding physical community networks in urban centers. Meet, collaborate, and share passions in neighborhood clusters.
             </p>
           </div>
           
           <div>
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Explore</h4>
+            <h4 className="text-xs font-bold text-[#3E2723] uppercase tracking-wider mb-4">Explore</h4>
             <ul className="space-y-2 text-[11px]">
-              <li><button onClick={() => navigate('/')} className="hover:text-white transition-colors cursor-pointer text-left">Discover Meetups</button></li>
-              <li><button onClick={() => navigate('/map')} className="hover:text-white transition-colors cursor-pointer text-left">Interactive Map</button></li>
-              <li><button onClick={() => navigate('/create')} className="hover:text-white transition-colors cursor-pointer text-left">Host a Circle</button></li>
+              <li><button onClick={() => navigate('/')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Discover Meetups</button></li>
+              <li><button onClick={() => navigate('/map')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Interactive Map</button></li>
+              <li><button onClick={() => navigate('/create')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Host a Circle</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Dashboard</h4>
+            <h4 className="text-xs font-bold text-[#3E2723] uppercase tracking-wider mb-4">Dashboard</h4>
             <ul className="space-y-2 text-[11px]">
-              <li><button onClick={() => navigate('/dashboard')} className="hover:text-white transition-colors cursor-pointer text-left">Organizer Console</button></li>
-              <li><button onClick={() => navigate('/profile')} className="hover:text-white transition-colors cursor-pointer text-left">Member Profile</button></li>
-              <li><button onClick={() => navigate('/login')} className="hover:text-white transition-colors cursor-pointer text-left">Quick Sign In</button></li>
+              <li><button onClick={() => navigate('/dashboard')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Organizer Console</button></li>
+              <li><button onClick={() => navigate('/profile')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Member Profile</button></li>
+              <li><button onClick={() => navigate('/login')} className="hover:text-[#3E2723] transition-colors cursor-pointer text-left">Quick Sign In</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Environment</h4>
+            <h4 className="text-xs font-bold text-[#3E2723] uppercase tracking-wider mb-4">Environment</h4>
             <ul className="space-y-2 text-[11px]">
               <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
                 <span>Port 5173 (Vite + React)</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
                 <span>Port 5000 (Express Node)</span>
               </li>
               <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-amber-600 rounded-full"></span>
                 <span>In-Memory MongoDB Active</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-550">
+        <div className="max-w-7xl mx-auto border-t border-[#E6DFD3] pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-slate-500">
           <p>© 2026 Get-To-Gather. All rights reserved.</p>
           <p className="mt-2 sm:mt-0">Made with ❤️ for local community builders.</p>
         </div>

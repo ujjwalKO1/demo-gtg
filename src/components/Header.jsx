@@ -8,22 +8,22 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-white border-b border-gray-150 sticky top-0 z-50">
+    <header className="bg-[#F4F0E8] border-b border-[#E6DFD3] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-1.5 select-none shrink-0">
-          <span className="text-xl font-extrabold tracking-tight text-gray-900 flex items-center gap-1">
+          <span className="text-xl font-extrabold tracking-tight text-[#3E2723] flex items-center gap-1">
             Get-To-Gather<span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
           </span>
         </Link>
 
         {/* Desktop PC Nav Links */}
-        <nav className="hidden sm:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-gray-500">
+        <nav className="hidden sm:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-[#5D4037]">
           <NavLink
             to="/"
             className={({ isActive }) =>
               `transition-all border-b-2 pb-1 ${
-                isActive ? 'text-primary border-primary' : 'border-transparent text-gray-500 hover:text-primary'
+                isActive ? 'text-primary border-primary' : 'border-transparent text-[#5D4037] hover:text-primary'
               }`
             }
           >
@@ -33,7 +33,7 @@ const Header = () => {
             to="/map"
             className={({ isActive }) =>
               `transition-all border-b-2 pb-1 ${
-                isActive ? 'text-primary border-primary' : 'border-transparent text-gray-500 hover:text-primary'
+                isActive ? 'text-primary border-primary' : 'border-transparent text-[#5D4037] hover:text-primary'
               }`
             }
           >
@@ -43,7 +43,7 @@ const Header = () => {
             to="/create"
             className={({ isActive }) =>
               `transition-all border-b-2 pb-1 ${
-                isActive ? 'text-primary border-primary' : 'border-transparent text-gray-500 hover:text-primary'
+                isActive ? 'text-primary border-primary' : 'border-transparent text-[#5D4037] hover:text-primary'
               }`
             }
           >
@@ -53,7 +53,7 @@ const Header = () => {
             to="/dashboard"
             className={({ isActive }) =>
               `transition-all border-b-2 pb-1 ${
-                isActive ? 'text-primary border-primary' : 'border-transparent text-gray-500 hover:text-primary'
+                isActive ? 'text-primary border-primary' : 'border-transparent text-[#5D4037] hover:text-primary'
               }`
             }
           >
