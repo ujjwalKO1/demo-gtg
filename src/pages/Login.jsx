@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useGoogleLogin } from '@react-oauth/google';
 import { Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 
 const Login = () => {
-  const { login, error: authError } = useAuth();
+  const { login, loginWithGoogle, error: authError } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -47,6 +48,25 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleSuccess = async (tokenResponse) => {
+    try {
+      const result = await loginWithGoogle(tokenResponse.access_token);
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.message || 'Google login failed.');
+      }
+    } catch (err) {
+      setError('Google login failed.');
+    }
+  };
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: handleGoogleSuccess,
+    onError: () => setError('Google Authentication was cancelled or failed.')
+  });
+
 
   return (
     <div className="flex-grow bg-[#FAF7F2] py-12 px-4 flex items-center justify-center min-h-[calc(100vh-69px)]">
@@ -147,9 +167,9 @@ const Login = () => {
           <div className="flex-grow border-t border-[#E6DFD3]"></div>
         </div>
 
-        {/* Google sign-in ready mockup */}
+        {/* Google sign-in custom button */}
         <button
-          onClick={() => alert('Google Authentication is ready to be configured! Set up OAuth credentials in backend settings.')}
+          onClick={() => loginGoogle()}
           className="w-full border border-[#E6DFD3] hover:bg-[#FAF7F2] text-[#3E2723] font-bold py-3 rounded-2xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">

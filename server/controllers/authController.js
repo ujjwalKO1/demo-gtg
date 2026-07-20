@@ -3,6 +3,9 @@ import HostCreditTransaction from '../models/HostCreditTransaction.js';
 import Event from '../models/Event.js';
 import JoinRequest from '../models/JoinRequest.js';
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper to generate JWT Token
 const generateToken = (id) => {
@@ -103,6 +106,83 @@ export const login = async (req, res, next) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        isVerified: user.isVerified,
+        verificationStatus: user.verificationStatus,
+        hostCredits: user.hostCredits,
+        communityScore: user.communityScore,
+        achievements: user.achievements
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Google Auth login/register
+// @route   POST /api/auth/google
+// @access  Public
+export const googleLogin = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      res.statusCode = 400;
+      throw new Error('No Google token provided');
+    }
+
+    // Since we use the implicit flow on frontend, we get an access_token. 
+    // We can fetch the user profile directly from Google API.
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    
+    if (!response.ok) {
+       res.statusCode = 401;
+       throw new Error('Failed to verify Google token');
+    }
+    
+    const payload = await response.json();
+    const { email, name, sub: googleId, picture } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Register new user via Google
+      user = await User.create({
+        name,
+        email,
+        googleId,
+        avatar: picture,
+        hostCredits: 1,
+        achievements: ['Welcome Gift']
+      });
+
+      // Create welcome gift transaction
+      await HostCreditTransaction.create({
+        user: user._id,
+        amount: 1,
+        type: 'welcome_gift',
+        details: 'Received 1 free host credit upon joining GTG via Google'
+      });
+    } else {
+      // User exists, update googleId if not present
+      if (!user.googleId) {
+        user.googleId = googleId;
+      }
+      if (!user.avatar && picture) {
+        user.avatar = picture;
+      }
+      await user.save();
+    }
+
+    res.json({
+      success: true,
+      token: generateToken(user._id),
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
         isVerified: user.isVerified,
         verificationStatus: user.verificationStatus,
         hostCredits: user.hostCredits,

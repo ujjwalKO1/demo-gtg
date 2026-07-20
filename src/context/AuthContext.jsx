@@ -112,6 +112,39 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Login with Google
+  const loginWithGoogle = async (credential) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: credential })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('gtg_token', data.token);
+        setToken(data.token);
+        setUser(data.user);
+        setIsAuthenticated(true);
+        return { success: true };
+      } else {
+        setError(data.message || 'Google login failed');
+        return { success: false, message: data.message };
+      }
+    } catch (err) {
+      setError('Server connection error. Please try again.');
+      return { success: false, message: 'Server connection error.' };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Logout User
   const logout = () => {
     localStorage.removeItem('gtg_token');
@@ -212,6 +245,7 @@ export const AuthProvider = ({ children }) => {
         error,
         register,
         login,
+        loginWithGoogle,
         logout,
         updateProfile,
         verifyIdentity,
