@@ -106,6 +106,11 @@ const CreateEvent = () => {
         },
         (error) => {
           console.log('User denied or GPS unavailable for Host page', error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 25000,
+          maximumAge: 30000
         }
       );
     }
@@ -260,7 +265,18 @@ const CreateEvent = () => {
         },
         (error) => {
           console.error("GPS Error:", error);
-          alert('Could not fetch location. Please ensure location permissions are granted in your browser.');
+          if (error.code === 1) {
+            alert('Location permission denied. Please allow location access in your browser.');
+          } else if (error.code === 3) {
+            alert('Location request timed out. Your GPS signal might be weak indoors.');
+          } else {
+            alert('Could not determine your location.');
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 25000,
+          maximumAge: 30000
         }
       );
     } else {

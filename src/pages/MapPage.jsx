@@ -69,12 +69,18 @@ const MapPage = () => {
         },
         (error) => {
           console.error(error);
-          alert('GPS unavailable. Make sure location permissions are granted.');
+          if (error.code === 1) {
+            alert('Location permission denied. Please allow location access in your browser.');
+          } else if (error.code === 3) {
+            alert('Location request timed out. Your GPS signal might be weak indoors.');
+          } else {
+            alert('Could not determine your location.');
+          }
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
+          timeout: 25000,
+          maximumAge: 30000
         }
       );
     }
