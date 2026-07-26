@@ -1,40 +1,79 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { 
-  Users, UserCheck, ShieldCheck, BarChart3, 
-  Check, X, Award, CheckCircle2, ChevronRight 
+import {
+  Users, UserCheck, ShieldCheck, BarChart3,
+  Check, X, Award, CheckCircle2, ChevronRight
 } from 'lucide-react';
+
+// Temporary mock data so the redesigned dashboard renders beautifully even
+// without a running backend / hosted events yet.
+const MOCK_HOSTED_EVENTS = [
+  {
+    _id: 'mock-dash-1',
+    title: 'Sunrise 5-a-side Football',
+    dateTime: new Date(Date.now() + 86400000).toISOString(),
+    participantLimit: 10,
+    spotsLeft: 3
+  }
+];
+
+const MOCK_REQUESTS = [
+  {
+    _id: 'req-1',
+    status: 'pending',
+    user: { name: 'Kavya R.', email: 'kavya@example.com', communityScore: 120, isVerified: true, avatar: '' }
+  },
+  {
+    _id: 'req-2',
+    status: 'pending',
+    user: { name: 'Dev A.', email: 'dev@example.com', communityScore: 45, isVerified: false, avatar: '' }
+  }
+];
+
+const MOCK_ATTENDANCE = [
+  { _id: 'att-1', isPresent: true, user: { _id: 'u1', name: 'Sanjay M.', phone: '+91 98xxxxxx01', avatar: '' } },
+  { _id: 'att-2', isPresent: false, user: { _id: 'u2', name: 'Ishita P.', phone: '+91 98xxxxxx02', avatar: '' } }
+];
 
 const Dashboard = () => {
   const { user, token } = useAuth();
-  
+
   const [hostedEvents, setHostedEvents] = useState([]);
   const [selectedEventId, setSelectedEventId] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [requests, setRequests] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [savingAttendance, setSavingAttendance] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
   useEffect(() => {
     const fetchHostedEvents = async () => {
-      if (!token) return;
+      if (!token) {
+        // No auth/backend session yet — show mock data for the design preview
+        setHostedEvents(MOCK_HOSTED_EVENTS);
+        setSelectedEventId(MOCK_HOSTED_EVENTS[0]._id);
+        setLoading(false);
+        return;
+      }
       try {
         const response = await fetch('/api/auth/profile', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
-        if (data.success && data.eventsHosted) {
+        if (data.success && data.eventsHosted && data.eventsHosted.length > 0) {
           setHostedEvents(data.eventsHosted);
-          if (data.eventsHosted.length > 0) {
-            setSelectedEventId(data.eventsHosted[0]._id);
-          }
+          setSelectedEventId(data.eventsHosted[0]._id);
+        } else {
+          setHostedEvents(MOCK_HOSTED_EVENTS);
+          setSelectedEventId(MOCK_HOSTED_EVENTS[0]._id);
         }
       } catch (err) {
         console.error('Error fetching dashboard events:', err);
+        setHostedEvents(MOCK_HOSTED_EVENTS);
+        setSelectedEventId(MOCK_HOSTED_EVENTS[0]._id);
       } finally {
         setLoading(false);
       }
@@ -43,7 +82,17 @@ const Dashboard = () => {
   }, [token]);
 
   const fetchEventData = async () => {
-    if (!selectedEventId || !token) return;
+    if (!selectedEventId) return;
+
+    // Mock event branch — keeps the design fully populated without a backend
+    if (selectedEventId.startsWith('mock-')) {
+      setSelectedEvent(MOCK_HOSTED_EVENTS.find(e => e._id === selectedEventId));
+      setRequests(MOCK_REQUESTS);
+      setAttendance(MOCK_ATTENDANCE);
+      return;
+    }
+
+    if (!token) return;
     try {
       const ev = hostedEvents.find(e => e._id === selectedEventId);
       setSelectedEvent(ev);
@@ -73,6 +122,12 @@ const Dashboard = () => {
   }, [selectedEventId, hostedEvents, token]);
 
   const handleRequestAction = async (requestId, status) => {
+    // Mock branch — update local state only, no network call
+    if (requestId.startsWith('req-')) {
+      setRequests(requests.map(r => r._id === requestId ? { ...r, status } : r));
+      return;
+    }
+
     try {
       const response = await fetch(`/api/requests/${requestId}`, {
         method: 'PUT',
@@ -117,6 +172,17 @@ const Dashboard = () => {
   const handleSaveAttendance = async () => {
     setSavingAttendance(true);
     setSuccessMsg('');
+
+    // Mock branch — simulate a save without a backend
+    if (selectedEventId?.startsWith('mock-')) {
+      setTimeout(() => {
+        setSuccessMsg('Attendance marked successfully! Credit rewards allocated.');
+        setSavingAttendance(false);
+        setTimeout(() => setSuccessMsg(''), 4000);
+      }, 500);
+      return;
+    }
+
     const attendeesList = attendance.map(att => ({
       userId: att.user?._id,
       isPresent: att.isPresent
@@ -149,9 +215,9 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex-grow flex flex-col items-center justify-center bg-[#FAF7F2] p-8">
-        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="mt-4 text-xs font-semibold text-[#5D4037]">Loading organizer metrics...</p>
+      <div className="flex-grow flex flex-col items-center justify-center bg-white p-8">
+        <div className="w-9 h-9 border-[3px] border-[#1D1D1F] border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-xs font-medium text-[#86868B]">Loading organizer metrics...</p>
       </div>
     );
   }
@@ -159,45 +225,45 @@ const Dashboard = () => {
   const pendingRequests = requests.filter(r => r.status === 'pending');
 
   return (
-    <div className="flex-grow bg-[#FAF7F2] py-8 overflow-y-auto">
+    <div className="flex-grow bg-white py-16 overflow-y-auto">
       <div className="content-container">
-        
+
         {/* Title Header */}
-        <div className="bg-white border border-[#E6DFD3] rounded-3xl p-5 mb-8 shadow-xs">
-          <h1 className="text-xl font-black text-[#3E2723] uppercase tracking-widest">Organizer Dashboard</h1>
-          <p className="text-xs text-[#5D4037]/80 mt-1">Manage RSVP registration applications and mark verified check-ins.</p>
+        <div className="bg-[#F5F5F7] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-8 mb-10">
+          <h1 className="text-2xl font-semibold text-[#1D1D1F] tracking-tight">Organizer Dashboard</h1>
+          <p className="text-sm text-[#6E6E73] mt-1.5">Manage RSVP registration applications and mark verified check-ins.</p>
         </div>
 
         {hostedEvents.length === 0 ? (
-          <div className="bg-white border border-[#E6DFD3] rounded-3xl p-12 text-center max-w-md mx-auto shadow-xs">
+          <div className="bg-[#F5F5F7] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-16 text-center max-w-md mx-auto">
             <span className="text-4xl">📈</span>
-            <h3 className="font-extrabold text-[#3E2723] text-base mt-4 font-sans">No events hosted yet</h3>
-            <p className="text-xs text-[#5D4037]/80 mt-2 mb-6 leading-relaxed">
+            <h3 className="font-semibold text-[#1D1D1F] text-base mt-4">No events hosted yet</h3>
+            <p className="text-xs text-[#86868B] mt-2 mb-6 leading-relaxed">
               You must host an event first before you can manage participants and check-ins.
             </p>
             <Link
               to="/create"
-              className="bg-primary hover:bg-primary-dark text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md inline-block"
+              className="bg-[#1D1D1F] hover:bg-black text-white font-medium text-xs px-6 py-3 rounded-full transition-all inline-block"
             >
               Host Event
             </Link>
           </div>
         ) : (
           /* Desktop Split Layout Grid */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+
             {/* LEFT COLUMN: Event switcher and analytics (40%) */}
             <div className="flex flex-col gap-6">
-              
+
               {/* Event selector dropdown */}
-              <div className="bg-white border border-gray-150 rounded-3xl p-5 shadow-xs">
-                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+              <div className="bg-white border border-black/[0.06] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-6">
+                <label className="block text-[10px] font-semibold text-[#86868B] uppercase tracking-wider mb-3">
                   Select Hosted Meetup
                 </label>
                 <select
                   value={selectedEventId}
                   onChange={(e) => setSelectedEventId(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-3 text-xs font-bold text-gray-800 focus:outline-none"
+                  className="w-full bg-[#F5F5F7] border-none rounded-2xl px-4 py-3.5 text-xs font-medium text-[#1D1D1F] focus:outline-none focus:ring-2 focus:ring-black/10"
                 >
                   {hostedEvents.map((ev) => (
                     <option key={ev._id} value={ev._id}>
@@ -209,30 +275,30 @@ const Dashboard = () => {
 
               {/* Stats Analytics */}
               {selectedEvent && (
-                <div className="bg-white border border-gray-150 rounded-3xl p-5 shadow-xs flex flex-col gap-4">
-                  <h3 className="font-black text-xs text-gray-950 uppercase tracking-widest border-b border-gray-100 pb-2">
+                <div className="bg-white border border-black/[0.06] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-6 flex flex-col gap-5">
+                  <h3 className="font-semibold text-xs text-[#1D1D1F] uppercase tracking-wider border-b border-black/[0.06] pb-3">
                     Event Performance
                   </h3>
-                  
+
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="bg-purple-50/50 border border-purple-100/50 p-3.5 rounded-2xl text-center">
-                      <BarChart3 size={16} className="text-primary mx-auto mb-1" />
-                      <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">Limit</span>
-                      <p className="text-sm font-extrabold text-gray-800 mt-0.5">{selectedEvent.participantLimit}</p>
+                    <div className="bg-[#F5F5F7] p-4 rounded-2xl text-center">
+                      <BarChart3 size={16} className="text-[#1D1D1F] mx-auto mb-1.5" />
+                      <span className="text-[8px] font-semibold text-[#AEAEB2] uppercase tracking-wider block">Limit</span>
+                      <p className="text-sm font-semibold text-[#1D1D1F] mt-0.5">{selectedEvent.participantLimit}</p>
                     </div>
 
-                    <div className="bg-emerald-50/50 border border-emerald-100/50 p-3.5 rounded-2xl text-center">
-                      <UserCheck size={16} className="text-emerald-600 mx-auto mb-1" />
-                      <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">RSVPs</span>
-                      <p className="text-sm font-extrabold text-emerald-800 mt-0.5 text-emerald-700">
+                    <div className="bg-[#F5F5F7] p-4 rounded-2xl text-center">
+                      <UserCheck size={16} className="text-[#1D7A46] mx-auto mb-1.5" />
+                      <span className="text-[8px] font-semibold text-[#AEAEB2] uppercase tracking-wider block">RSVPs</span>
+                      <p className="text-sm font-semibold text-[#1D1D1F] mt-0.5">
                         {selectedEvent.participantLimit - selectedEvent.spotsLeft}
                       </p>
                     </div>
 
-                    <div className="bg-amber-50/50 border border-amber-100/50 p-3.5 rounded-2xl text-center">
-                      <Users size={16} className="text-amber-500 mx-auto mb-1" />
-                      <span className="text-[8px] font-bold text-gray-400 uppercase tracking-wider block">Queue</span>
-                      <p className="text-sm font-extrabold text-amber-800 mt-0.5 text-amber-700">
+                    <div className="bg-[#F5F5F7] p-4 rounded-2xl text-center">
+                      <Users size={16} className="text-[#B8860B] mx-auto mb-1.5" />
+                      <span className="text-[8px] font-semibold text-[#AEAEB2] uppercase tracking-wider block">Queue</span>
+                      <p className="text-sm font-semibold text-[#1D1D1F] mt-0.5">
                         {pendingRequests.length}
                       </p>
                     </div>
@@ -244,36 +310,36 @@ const Dashboard = () => {
 
             {/* RIGHT COLUMN: Pending queues and Check-in sheets (60%) */}
             <div className="lg:col-span-2 flex flex-col gap-6">
-              
+
               {/* RSVP requests queue */}
-              <div className="bg-white border border-gray-150 rounded-3xl p-6 shadow-xs">
-                <h3 className="font-black text-xs text-gray-950 uppercase tracking-widest mb-4 flex items-center gap-1.5 border-b border-gray-100 pb-2">
-                  <ChevronRight size={14} className="text-primary shrink-0" /> Pending Join Requests ({pendingRequests.length})
+              <div className="bg-white border border-black/[0.06] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-7">
+                <h3 className="font-semibold text-xs text-[#1D1D1F] uppercase tracking-wider mb-5 flex items-center gap-1.5 border-b border-black/[0.06] pb-3">
+                  <ChevronRight size={14} className="shrink-0" /> Pending Join Requests ({pendingRequests.length})
                 </h3>
 
                 {pendingRequests.length === 0 ? (
-                  <p className="text-xs text-gray-400 italic py-6 text-center">No pending guest request approvals.</p>
+                  <p className="text-xs text-[#AEAEB2] italic py-6 text-center">No pending guest request approvals.</p>
                 ) : (
                   <div className="flex flex-col gap-3">
                     {pendingRequests.map((req) => (
                       <div
                         key={req._id}
-                        className="bg-gray-50/60 border border-gray-150 rounded-2xl p-4 flex items-center justify-between gap-3"
+                        className="bg-[#F5F5F7] rounded-2xl p-4 flex items-center justify-between gap-3"
                       >
                         <div className="flex items-center gap-3">
                           <img
                             src={req.user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                             alt="avatar"
-                            className="w-10 h-10 rounded-xl object-cover shrink-0"
+                            className="w-10 h-10 rounded-full object-cover shrink-0"
                           />
                           <div>
                             <div className="flex items-center gap-1">
-                              <h4 className="font-extrabold text-xs text-gray-800 leading-none">{req.user?.name}</h4>
+                              <h4 className="font-semibold text-xs text-[#1D1D1F] leading-none">{req.user?.name}</h4>
                               {req.user?.isVerified && (
-                                <ShieldCheck size={14} className="text-primary fill-purple-100" />
+                                <ShieldCheck size={14} className="text-[#0A6CD9]" />
                               )}
                             </div>
-                            <span className="text-[10px] text-gray-400 mt-1 block">
+                            <span className="text-[10px] text-[#86868B] mt-1.5 block">
                               Email: {req.user?.email} • Reputation: {req.user?.communityScore} pts
                             </span>
                           </div>
@@ -282,13 +348,13 @@ const Dashboard = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleRequestAction(req._id, 'approved')}
-                            className="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-[10px] font-bold px-3 py-2"
+                            className="bg-[#1D1D1F] hover:bg-black text-white rounded-full transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-[10px] font-semibold px-3.5 py-2"
                           >
                             <Check size={12} strokeWidth={3} /> Approve
                           </button>
                           <button
                             onClick={() => handleRequestAction(req._id, 'rejected')}
-                            className="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-xl transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-[10px] font-bold px-3 py-2"
+                            className="bg-white border border-black/[0.1] hover:bg-black/[0.03] text-[#1D1D1F] rounded-full transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-[10px] font-semibold px-3.5 py-2"
                           >
                             <X size={12} strokeWidth={3} /> Decline
                           </button>
@@ -300,53 +366,53 @@ const Dashboard = () => {
               </div>
 
               {/* Attendance checked sheet */}
-              <div className="bg-white border border-gray-150 rounded-3xl p-6 shadow-xs">
-                <h3 className="font-black text-xs text-gray-950 uppercase tracking-widest mb-1 flex items-center gap-1.5 border-b border-gray-100 pb-2">
-                  <ChevronRight size={14} className="text-primary shrink-0" /> Checked-In Attendance Sheet ({attendance.length})
+              <div className="bg-white border border-black/[0.06] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-7">
+                <h3 className="font-semibold text-xs text-[#1D1D1F] uppercase tracking-wider mb-2 flex items-center gap-1.5 border-b border-black/[0.06] pb-3">
+                  <ChevronRight size={14} className="shrink-0" /> Checked-In Attendance Sheet ({attendance.length})
                 </h3>
-                <p className="text-[10px] text-gray-400 mb-4">
+                <p className="text-[10px] text-[#86868B] mb-5">
                   Check boxes next to approved guests who attended physically, then save to distribute host credit progress rewards.
                 </p>
 
                 {successMsg && (
-                  <div className="mb-4 bg-emerald-50 border border-emerald-100 text-emerald-800 px-4 py-3 rounded-2xl text-xs flex items-center gap-2 animate-fade-in font-bold">
-                    <CheckCircle2 size={16} className="text-emerald-600 fill-emerald-100" />
+                  <div className="mb-4 bg-[#F0FAF3] text-[#1D7A46] px-4 py-3 rounded-2xl text-xs flex items-center gap-2 animate-fade-in font-semibold">
+                    <CheckCircle2 size={16} />
                     <span>{successMsg}</span>
                   </div>
                 )}
 
                 {attendance.length === 0 ? (
-                  <p className="text-xs text-gray-450 italic py-6 text-center">No approved attendees appear yet.</p>
+                  <p className="text-xs text-[#AEAEB2] italic py-6 text-center">No approved attendees appear yet.</p>
                 ) : (
                   <div className="flex flex-col gap-4">
-                    <div className="bg-gray-50 border border-gray-150 rounded-2xl p-4 flex flex-col gap-3">
+                    <div className="bg-[#F5F5F7] rounded-2xl p-4 flex flex-col gap-3">
                       {attendance.map((att) => (
                         <div
                           key={att._id}
-                          className="flex items-center justify-between pb-3 border-b border-gray-200/50 last:border-0 last:pb-0"
+                          className="flex items-center justify-between pb-3 border-b border-black/[0.05] last:border-0 last:pb-0"
                         >
                           <div className="flex items-center gap-3">
                             <img
                               src={att.user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                               alt="avatar"
-                              className="w-8 h-8 rounded-lg object-cover bg-gray-100"
+                              className="w-8 h-8 rounded-full object-cover bg-white"
                             />
                             <div>
-                              <h5 className="font-extrabold text-xs text-gray-800 leading-none">{att.user?.name}</h5>
-                              <span className="text-[9px] text-gray-400 font-mono block mt-1">
+                              <h5 className="font-semibold text-xs text-[#1D1D1F] leading-none">{att.user?.name}</h5>
+                              <span className="text-[9px] text-[#AEAEB2] font-mono block mt-1.5">
                                 Mobile: {att.user?.phone || 'No phone linked'}
                               </span>
                             </div>
                           </div>
 
-                          <label className="flex items-center cursor-pointer select-none bg-white border border-gray-200 rounded-xl px-3 py-1.5 shadow-3xs">
+                          <label className="flex items-center cursor-pointer select-none bg-white rounded-full px-3.5 py-1.5">
                             <input
                               type="checkbox"
                               checked={att.isPresent}
                               onChange={() => handleAttendanceCheckbox(att.user?._id)}
-                              className="w-4 h-4 text-primary bg-gray-100 border-gray-250 rounded-xs focus:ring-primary"
+                              className="w-4 h-4 text-[#1D1D1F] bg-white border-black/20 rounded-xs focus:ring-black/20"
                             />
-                            <span className="text-xs font-bold text-gray-700 ml-2">Present</span>
+                            <span className="text-xs font-medium text-[#48484A] ml-2">Present</span>
                           </label>
                         </div>
                       ))}
@@ -355,7 +421,7 @@ const Dashboard = () => {
                     <button
                       onClick={handleSaveAttendance}
                       disabled={savingAttendance}
-                      className="w-full bg-gray-900 hover:bg-black text-white font-extrabold text-xs py-4 rounded-2xl transition-colors shadow-sm flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                      className="w-full bg-[#1D1D1F] hover:bg-black text-white font-semibold text-xs py-4 rounded-full transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
                     >
                       <Award size={14} />
                       {savingAttendance ? 'Saving check-in results...' : 'Save Checked-In Attendance'}

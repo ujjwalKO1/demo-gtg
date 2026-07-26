@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #78350F;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
+
+  --color-primary: #E05236;
   --color-primary-dark: #5C2D12;
   --color-primary-light: #FDFBF7;
   --color-accent-sports: #166534;
@@ -29,9 +32,13 @@
 
 @layer base {
   body {
-    background-color: #FAF7F2;
-    color: #3E2723;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FDFBF7;
+    color: #121212;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   }
 }
 
@@ -244,4 +251,28 @@
 .leaflet-popup-close-button:hover {
   color: #64748b !important;
   background: transparent !important;
+}
+
+.glass-panel {
+  background: #FFFFFF;
+  border: 1.5px solid #121212;
+  box-shadow: 4px 4px 0px 0px rgba(18, 18, 18, 1);
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.glass-panel:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px rgba(18, 18, 18, 1);
+}
+
+.aurora-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(224, 82, 54, 0.15) 0%, rgba(253, 251, 247, 0) 60%);
+}
+
+.aurora-text {
+  background: linear-gradient(135deg, #E05236 0%, #121212 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

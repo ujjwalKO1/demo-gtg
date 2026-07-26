@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import * as nsfwjs from 'nsfwjs';
+import * as tf from '@tensorflow/tfjs';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LeafletMap from '../components/LeafletMap';
@@ -28,6 +30,24 @@ const CreateEvent = () => {
   const [mode, setMode] = useState('edit');
   const [loading, setLoading] = useState(false);
   const [geocoding, setGeocoding] = useState(false);
+
+  // NSFW AI State
+  const [nsfwModel, setNsfwModel] = useState(null);
+  const [isCheckingImage, setIsCheckingImage] = useState(false);
+  const [imageError, setImageError] = useState('');
+
+  useEffect(() => {
+    // Load the ML model when component mounts
+    const loadModel = async () => {
+      try {
+        const model = await nsfwjs.load();
+        setNsfwModel(model);
+      } catch (err) {
+        console.error('Error loading NSFW model:', err);
+      }
+    };
+    loadModel();
+  }, []);
 
   // Form Fields
   const [title, setTitle] = useState('');
@@ -82,7 +102,7 @@ const CreateEvent = () => {
     }
   }, [category, isCustomImage]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -91,12 +111,39 @@ const CreateEvent = () => {
       return;
     }
 
+    setImageError('');
+    setIsCheckingImage(true);
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (event) => {
       const img = new Image();
       img.src = event.target.result;
-      img.onload = () => {
+      img.onload = async () => {
+        // --- AI Moderation Check ---
+        if (nsfwModel) {
+          try {
+            // Run inference
+            const predictions = await nsfwModel.classify(img);
+            console.log('NSFW Predictions:', predictions);
+            
+            // Check if any explicit category is > 60% probability
+            const explicitCategories = ['Porn', 'Hentai', 'Sexy'];
+            const isExplicit = predictions.some(p => 
+              explicitCategories.includes(p.className) && p.probability > 0.60
+            );
+
+            if (isExplicit) {
+              setImageError('AI Moderation: Image flagged for inappropriate content. Please select a different image.');
+              setIsCheckingImage(false);
+              return; // Stop processing and block upload
+            }
+          } catch (err) {
+            console.error('Error checking image safety:', err);
+          }
+        }
+        // --- End Moderation ---
+
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
@@ -117,6 +164,7 @@ const CreateEvent = () => {
         const base64String = canvas.toDataURL('image/jpeg', 0.6);
         setCoverImage(base64String);
         setIsCustomImage(true);
+        setIsCheckingImage(false);
       };
     };
   };
@@ -356,28 +404,44 @@ const CreateEvent = () => {
                       </button>
                     </>
                   ) : (
-                    <label htmlFor="event-cover-upload" className="w-full h-full flex flex-col items-center justify-center cursor-pointer opacity-70 group-hover:opacity-100 transition-opacity">
-                      <div className="bg-white p-2 rounded-xl shadow-3xs mb-2 text-gray-400 group-hover:text-primary transition-colors">
-                        <Camera size={18} />
-                      </div>
-                      <span className="text-[10px] font-bold text-gray-500">Upload your own photo</span>
-                      <span className="text-[9px] text-gray-400 mt-0.5">JPG, PNG (Max scaled to 800px)</span>
-                      <input 
-                        id="event-cover-upload"
-                        type="file" 
-                        accept="image/*" 
-                        className="hidden" 
-                        onChange={handleImageUpload}
-                      />
-                    </label>
+                      <label htmlFor="event-cover-upload" className={`w-full h-full flex flex-col items-center justify-center transition-opacity ${isCheckingImage ? 'opacity-100 cursor-not-allowed' : 'opacity-70 group-hover:opacity-100 cursor-pointer'}`}>
+                        {isCheckingImage ? (
+                          <>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2"></div>
+                            <span className="text-[10px] font-bold text-gray-800">AI scanning image...</span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="bg-white p-2 rounded-xl shadow-3xs mb-2 text-gray-400 group-hover:text-primary transition-colors">
+                              <Camera size={18} />
+                            </div>
+                            <span className="text-[10px] font-bold text-gray-500">Upload your own photo</span>
+                            <span className="text-[9px] text-gray-400 mt-0.5">JPG, PNG (Max scaled to 800px)</span>
+                          </>
+                        )}
+                        <input 
+                          id="event-cover-upload"
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden" 
+                          onChange={handleImageUpload}
+                          disabled={isCheckingImage}
+                        />
+                      </label>
+                    )}
+                  </div>
+                  {imageError && (
+                    <div className="mt-2 bg-rose-50 border-2 border-rose-600 rounded-lg p-2.5 flex gap-2 items-center shadow-[2px_2px_0_0_#e11d48]">
+                      <span className="text-rose-600">🚨</span>
+                      <span className="text-xs font-bold text-rose-800">{imageError}</span>
+                    </div>
                   )}
-                </div>
-                {!isCustomImage && (
-                  <p className="text-[9px] text-gray-400 mt-1.5 flex justify-between">
-                    <span>If no photo is uploaded, we will use a premium default based on the category.</span>
-                    <span className="text-primary font-bold cursor-pointer hover:underline" onClick={() => setMode('preview')}>Preview Default</span>
-                  </p>
-                )}
+                  {!isCustomImage && !imageError && (
+                    <p className="text-[9px] text-gray-400 mt-1.5 flex justify-between">
+                      <span>If no photo is uploaded, we will use a premium default based on the category.</span>
+                      <span className="text-primary font-bold cursor-pointer hover:underline" onClick={() => setMode('preview')}>Preview Default</span>
+                    </p>
+                  )}
               </div>
 
               <div>
