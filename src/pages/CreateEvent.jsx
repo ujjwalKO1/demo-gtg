@@ -96,6 +96,21 @@ const CreateEvent = () => {
     return () => clearTimeout(delayDebounce);
   }, [searchQuery]);
 
+  // Auto-locate host on mount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.log('User denied or GPS unavailable for Host page', error);
+        }
+      );
+    }
+  }, []);
+
   useEffect(() => {
     if (!isCustomImage) {
       setCoverImage(CATEGORY_COVERS[category] || CATEGORY_COVERS.Other);

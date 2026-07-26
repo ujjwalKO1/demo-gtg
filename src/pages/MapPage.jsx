@@ -33,10 +33,20 @@ const MapPage = () => {
         if (data.success) {
           setEvents(data.events);
           if (data.events.length > 0 && !selectedEvent) {
-            // Pick first event to center initially if no event is highlighted
+            // Pick first event to center initially ONLY if we don't have user location yet
+            // Check using a ref or just let the navigator logic handle it.
+            // Actually, let's just let the map center on user location entirely if possible,
+            // or just center on first event as fallback if location is not granted.
             const firstEv = data.events[0];
             if (firstEv.location?.latitude && firstEv.location?.longitude) {
-              setMapCenter([firstEv.location.latitude, firstEv.location.longitude]);
+              setMapCenter((prevCenter) => {
+                // If map is still on the default Bangalore center (12.9716), override it.
+                // Otherwise (meaning GPS located them), don't steal the camera.
+                if (prevCenter[0] === 12.9716 && prevCenter[1] === 77.5946) {
+                  return [firstEv.location.latitude, firstEv.location.longitude];
+                }
+                return prevCenter;
+              });
             }
           }
         }
