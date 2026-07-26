@@ -8,7 +8,7 @@ import confetti from 'canvas-confetti';
 import { 
   Plus, MapPin, Calendar, Users, Link as LinkIcon, 
   Sparkles, Eye, Edit3, ShieldCheck, HeartHandshake,
-  Maximize2, Minimize2, Search, Camera, X, UploadCloud
+  Maximize2, Minimize2, Search, Camera, X, UploadCloud, Navigation
 } from 'lucide-react';
 
 const CATEGORY_COVERS = {
@@ -248,6 +248,23 @@ const CreateEvent = () => {
       console.error('Error reverse geocoding:', err);
     } finally {
       setGeocoding(false);
+    }
+  };
+
+  const handleLocateMe = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.error("GPS Error:", error);
+          alert('Could not fetch location. Please ensure location permissions are granted in your browser.');
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser.');
     }
   };
 
@@ -658,6 +675,17 @@ const CreateEvent = () => {
                   selectedLocation={{ lat: latitude, lng: longitude }}
                   resizeTrigger={isMapExpanded}
                 />
+
+                {/* Locate Me Button Overlay */}
+                <button
+                  type="button"
+                  onClick={handleLocateMe}
+                  className="absolute top-3 left-3 z-[1000] bg-white hover:bg-gray-50 text-gray-800 p-2.5 rounded-xl border border-gray-200 shadow-md font-extrabold text-[10px] flex items-center gap-1.5 transition-all select-none active:scale-95 cursor-pointer"
+                  title="Locate Me"
+                >
+                  <Navigation size={12} strokeWidth={2.5} className="text-primary" />
+                  <span className="hidden sm:inline">Locate Me</span>
+                </button>
 
                 {/* Expand / Minimize Button Overlay */}
                 <button
