@@ -6,7 +6,7 @@ import confetti from 'canvas-confetti';
 import { 
   Plus, MapPin, Calendar, Users, Link as LinkIcon, 
   Sparkles, Eye, Edit3, ShieldCheck, HeartHandshake,
-  Maximize2, Minimize2, Search
+  Maximize2, Minimize2, Search, Camera, X, UploadCloud
 } from 'lucide-react';
 
 const CATEGORY_COVERS = {
@@ -34,6 +34,7 @@ const CreateEvent = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Social');
   const [coverImage, setCoverImage] = useState(CATEGORY_COVERS.Social);
+  const [isCustomImage, setIsCustomImage] = useState(false);
   const [dateTime, setDateTime] = useState('');
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState(12.9716); // default Bangalore
@@ -76,8 +77,58 @@ const CreateEvent = () => {
   }, [searchQuery]);
 
   useEffect(() => {
+    if (!isCustomImage) {
+      setCoverImage(CATEGORY_COVERS[category] || CATEGORY_COVERS.Other);
+    }
+  }, [category, isCustomImage]);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_WIDTH = 800;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Compress to 60% quality JPEG
+        const base64String = canvas.toDataURL('image/jpeg', 0.6);
+        setCoverImage(base64String);
+        setIsCustomImage(true);
+      };
+    };
+  };
+
+  const removeCustomImage = () => {
+    setIsCustomImage(false);
     setCoverImage(CATEGORY_COVERS[category] || CATEGORY_COVERS.Other);
-  }, [category]);
+    // Reset file input if needed
+    const fileInput = document.getElementById('event-cover-upload');
+    if (fileInput) fileInput.value = '';
+  };
+
 
   const handleSearchLocation = async (e) => {
     if (e) e.preventDefault();
@@ -288,6 +339,46 @@ const CreateEvent = () => {
               <h3 className="font-black text-xs text-gray-950 uppercase tracking-widest border-b border-gray-100 pb-2 mb-2">
                 1. Meetup Details
               </h3>
+
+              {/* Image Upload Area */}
+              <div className="mb-2">
+                <label className="block text-xs font-bold text-gray-600 mb-2">Event Cover Photo (Optional)</label>
+                <div className="relative w-full h-32 bg-gray-50 border-2 border-dashed border-gray-250 rounded-2xl overflow-hidden group hover:border-primary/50 transition-colors">
+                  {isCustomImage ? (
+                    <>
+                      <img src={coverImage} alt="Cover Preview" className="w-full h-full object-cover" />
+                      <button 
+                        type="button" 
+                        onClick={removeCustomImage}
+                        className="absolute top-2 right-2 bg-white/90 text-gray-800 p-1.5 rounded-xl shadow-md hover:bg-rose-50 hover:text-rose-600 transition-colors backdrop-blur-sm"
+                      >
+                        <X size={14} strokeWidth={3} />
+                      </button>
+                    </>
+                  ) : (
+                    <label htmlFor="event-cover-upload" className="w-full h-full flex flex-col items-center justify-center cursor-pointer opacity-70 group-hover:opacity-100 transition-opacity">
+                      <div className="bg-white p-2 rounded-xl shadow-3xs mb-2 text-gray-400 group-hover:text-primary transition-colors">
+                        <Camera size={18} />
+                      </div>
+                      <span className="text-[10px] font-bold text-gray-500">Upload your own photo</span>
+                      <span className="text-[9px] text-gray-400 mt-0.5">JPG, PNG (Max scaled to 800px)</span>
+                      <input 
+                        id="event-cover-upload"
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                  )}
+                </div>
+                {!isCustomImage && (
+                  <p className="text-[9px] text-gray-400 mt-1.5 flex justify-between">
+                    <span>If no photo is uploaded, we will use a premium default based on the category.</span>
+                    <span className="text-primary font-bold cursor-pointer hover:underline" onClick={() => setMode('preview')}>Preview Default</span>
+                  </p>
+                )}
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-gray-600 mb-1">Meetup Title</label>
