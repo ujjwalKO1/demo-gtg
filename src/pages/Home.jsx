@@ -109,7 +109,7 @@ const Home = () => {
 
       const response = await fetch(url);
       const data = await response.json();
-      if (data.success && data.events && data.events.length > 0) {
+      if (data.success && Array.isArray(data.events)) {
         setEvents(data.events);
       } else {
         setEvents(MOCK_EVENTS);
@@ -531,60 +531,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white text-[#6E6E73] border-t border-black/[0.06] py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-          <div>
-            <span className="text-lg font-semibold text-[#1D1D1F] tracking-tight block mb-4 select-none">
-              Get-To-Gather
-            </span>
-            <p className="text-[11px] text-[#86868B] leading-relaxed">
-              Rebuilding physical community networks in urban centers. Meet, collaborate, and share passions in neighborhood clusters.
-            </p>
-          </div>
 
-          <div>
-            <h4 className="text-xs font-semibold text-[#1D1D1F] uppercase tracking-wider mb-4">Explore</h4>
-            <ul className="space-y-2.5 text-[11px]">
-              <li><button onClick={() => navigate('/')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Discover Meetups</button></li>
-              <li><button onClick={() => navigate('/map')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Interactive Map</button></li>
-              <li><button onClick={() => navigate('/create')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Host a Circle</button></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-semibold text-[#1D1D1F] uppercase tracking-wider mb-4">Dashboard</h4>
-            <ul className="space-y-2.5 text-[11px]">
-              <li><button onClick={() => navigate('/dashboard')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Organizer Console</button></li>
-              <li><button onClick={() => navigate('/profile')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Member Profile</button></li>
-              <li><button onClick={() => navigate('/login')} className="hover:text-[#1D1D1F] transition-colors cursor-pointer text-left">Quick Sign In</button></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-semibold text-[#1D1D1F] uppercase tracking-wider mb-4">Environment</h4>
-            <ul className="space-y-2.5 text-[11px]">
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-[#1D7A46] rounded-full"></span>
-                <span>Port 5173 (Vite + React)</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-[#1D7A46] rounded-full"></span>
-                <span>Port 5000 (Express Node)</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-[#B8860B] rounded-full"></span>
-                <span>In-Memory MongoDB Active</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto border-t border-black/[0.06] pt-6 flex flex-col sm:flex-row justify-between items-center text-[10px] text-[#AEAEB2]">
-          <p>© 2026 Get-To-Gather. All rights reserved.</p>
-          <p className="mt-2 sm:mt-0">Made with ❤️ for local community builders.</p>
-        </div>
-      </footer>
 
       {/* Floating Help Button (Bottom-Right) */}
       <button
