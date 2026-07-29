@@ -19,18 +19,18 @@ const generateToken = (id) => {
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
-export const register = async (req, res, next) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
+
     if (userExists) {
-      res.statusCode = 400;
-      throw new Error('User already exists with this email');
+      return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
-    // Create user (starts with 1 host credit via default schema value)
+    // Create user
     const user = await User.create({
       name,
       email,
@@ -48,9 +48,18 @@ export const register = async (req, res, next) => {
         details: 'Received 1 free host credit upon joining GTG'
       });
 
+      const token = generateToken(user._id);
+      
+      // Set JWT as HttpOnly Cookie
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+
       res.status(201).json({
         success: true,
-        token: generateToken(user._id),
         user: {
           _id: user._id,
           name: user.name,
@@ -64,58 +73,65 @@ export const register = async (req, res, next) => {
         }
       });
     } else {
-      res.statusCode = 400;
-      throw new Error('Invalid user data');
+      res.status(400).json({ success: false, message: 'Invalid user data' });
     }
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public
-export const login = async (req, res, next) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      res.statusCode = 400;
-      throw new Error('Please provide email and password');
-    }
-
-    // Check for user
+    // Check for user email
     const user = await User.findOne({ email }).select('+password');
-    if (!user) {
-      res.statusCode = 401;
-      throw new Error('Invalid email or password');
-    }
 
-    // Check if password matches
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      res.statusCode = 401;
-      throw new Error('Invalid email or password');
-    }
+    if (user && (await user.matchPassword(password))) {
+      const token = generateToken(user._id);
 
-    res.json({
-      success: true,
-      token: generateToken(user._id),
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        isVerified: user.isVerified,
-        verificationStatus: user.verificationStatus,
-        hostCredits: user.hostCredits,
-        communityScore: user.communityScore,
-        achievements: user.achievements
-      }
-    });
+      // Set JWT as HttpOnly Cookie
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+      });
+
+      res.json({
+        success: true,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          isVerified: user.isVerified,
+          verificationStatus: user.verificationStatus,
+          hostCredits: user.hostCredits,
+          communityScore: user.communityScore,
+          achievements: user.achievements
+        }
+      });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
   } catch (error) {
-    next(error);
+    res.status(500).json({ success: false, message: error.message });
   }
+};
+
+// @desc    Logout user / clear cookie
+// @route   POST /api/auth/logout
+// @access  Public
+export const logout = (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
 
 // @desc    Google Auth login/register
@@ -129,8 +145,6 @@ export const googleLogin = async (req, res, next) => {
       throw new Error('No Google token provided');
     }
 
-    // Since we use the implicit flow on frontend, we get an access_token. 
-    // We can fetch the user profile directly from Google API.
     const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -146,7 +160,6 @@ export const googleLogin = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      // Register new user via Google
       user = await User.create({
         name,
         email,
@@ -156,7 +169,6 @@ export const googleLogin = async (req, res, next) => {
         achievements: ['Welcome Gift']
       });
 
-      // Create welcome gift transaction
       await HostCreditTransaction.create({
         user: user._id,
         amount: 1,
@@ -164,7 +176,6 @@ export const googleLogin = async (req, res, next) => {
         details: 'Received 1 free host credit upon joining GTG via Google'
       });
     } else {
-      // User exists, update googleId if not present
       if (!user.googleId) {
         user.googleId = googleId;
       }
@@ -174,9 +185,16 @@ export const googleLogin = async (req, res, next) => {
       await user.save();
     }
 
+    const jwtToken = generateToken(user._id);
+    res.cookie('jwt', jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+
     res.json({
       success: true,
-      token: generateToken(user._id),
       user: {
         _id: user._id,
         name: user.name,

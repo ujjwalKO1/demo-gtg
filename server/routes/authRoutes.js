@@ -2,6 +2,7 @@ import express from 'express';
 import {
   register,
   login,
+  logout,
   getProfile,
   updateProfile,
   verifyDigiLocker,
@@ -24,6 +25,7 @@ const authLimiter = rateLimit({
 router.post('/register', authLimiter, register);
 router.post('/login', authLimiter, login);
 router.post('/google', authLimiter, googleLogin);
+router.post('/logout', logout);
 router.get('/profile', protect, getProfile);
 router.put('/profile', protect, updateProfile);
 router.post('/verify', protect, verifyDigiLocker);

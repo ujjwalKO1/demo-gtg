@@ -37,7 +37,7 @@ const MOCK_ATTENDANCE = [
 ];
 
 const Dashboard = () => {
-  const { user, token } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [hostedEvents, setHostedEvents] = useState([]);
   const [selectedEventId, setSelectedEventId] = useState('');
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchHostedEvents = async () => {
-      if (!token) {
+      if (!isAuthenticated) {
         // No auth/backend session yet — show mock data for the design preview
         setHostedEvents(MOCK_HOSTED_EVENTS);
         setSelectedEventId(MOCK_HOSTED_EVENTS[0]._id);
@@ -60,7 +60,7 @@ const Dashboard = () => {
       }
       try {
         const response = await fetch('/api/auth/profile', {
-          headers: { 'Authorization': `Bearer ${token}` }
+          credentials: 'include'
         });
         const data = await response.json();
         if (data.success && data.eventsHosted && data.eventsHosted.length > 0) {
@@ -79,7 +79,7 @@ const Dashboard = () => {
       }
     };
     fetchHostedEvents();
-  }, [token]);
+  }, [isAuthenticated]);
 
   const fetchEventData = async () => {
     if (!selectedEventId) return;
@@ -92,13 +92,13 @@ const Dashboard = () => {
       return;
     }
 
-    if (!token) return;
+    if (!isAuthenticated) return;
     try {
       const ev = hostedEvents.find(e => e._id === selectedEventId);
       setSelectedEvent(ev);
 
       const reqResponse = await fetch(`/api/requests/event/${selectedEventId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const reqData = await reqResponse.json();
       if (reqData.success) {
@@ -106,7 +106,7 @@ const Dashboard = () => {
       }
 
       const attResponse = await fetch(`/api/attendance/event/${selectedEventId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const attData = await attResponse.json();
       if (attData.success) {
@@ -119,7 +119,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchEventData();
-  }, [selectedEventId, hostedEvents, token]);
+  }, [selectedEventId, hostedEvents, isAuthenticated]);
 
   const handleRequestAction = async (requestId, status) => {
     // Mock branch — update local state only, no network call
@@ -132,9 +132,9 @@ const Dashboard = () => {
       const response = await fetch(`/api/requests/${requestId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ status })
       });
       const data = await response.json();
@@ -192,9 +192,9 @@ const Dashboard = () => {
       const response = await fetch(`/api/attendance/event/${selectedEventId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ attendeesList })
       });
       const data = await response.json();

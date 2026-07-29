@@ -10,7 +10,7 @@ import {
 const EventDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, token, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [event, setEvent] = useState(null);
   const [attendees, setAttendees] = useState([]);
@@ -30,12 +30,9 @@ const EventDetails = () => {
 
   const fetchEventDetails = async () => {
     try {
-      const headers = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch(`/api/events/${id}`, { headers });
+      const response = await fetch(`/api/events/${id}`, { 
+        credentials: 'include' 
+      });
       const data = await response.json();
       
       if (data.success) {
@@ -62,7 +59,7 @@ const EventDetails = () => {
 
   useEffect(() => {
     fetchEventDetails();
-  }, [id, token]);
+  }, [id, isAuthenticated]);
 
   const handleJoinRequest = async () => {
     if (!isAuthenticated) {
@@ -74,9 +71,9 @@ const EventDetails = () => {
       const response = await fetch('/api/requests', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ eventId: event._id })
       });
       const data = await response.json();
@@ -107,9 +104,9 @@ const EventDetails = () => {
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ eventId: event._id, rating, comment })
       });
       const data = await response.json();

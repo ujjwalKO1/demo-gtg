@@ -9,7 +9,7 @@ import {
 
 const Profile = () => {
   const { 
-    user, token, logout, updateProfile, verifyPhone, refreshUser 
+    user, logout, updateProfile, verifyPhone, refreshUser, isAuthenticated 
   } = useAuth();
   const navigate = useNavigate();
 
@@ -31,10 +31,10 @@ const Profile = () => {
   const [savingBio, setSavingBio] = useState(false);
 
   const fetchProfileData = async () => {
-    if (!token) return;
+    if (!isAuthenticated) return;
     try {
       const response = await fetch('/api/auth/profile', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {
@@ -44,7 +44,7 @@ const Profile = () => {
       }
 
       const transResponse = await fetch('/api/credits/transactions', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const transData = await transResponse.json();
       if (transData.success) {
@@ -57,7 +57,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchProfileData();
-  }, [token]);
+  }, [isAuthenticated]);
 
   const handleUpdateBio = async (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ const Profile = () => {
     try {
       const response = await fetch('/api/credits/purchase', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {

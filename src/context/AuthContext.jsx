@@ -4,24 +4,16 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('gtg_token') || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Load user profile on mount if token exists
+  // Load user profile on mount
   useEffect(() => {
     const loadUser = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
       try {
         const response = await fetch('/api/auth/profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          credentials: 'include'
         });
 
         const data = await response.json();
@@ -30,21 +22,19 @@ export const AuthProvider = ({ children }) => {
           setUser(data.user);
           setIsAuthenticated(true);
         } else {
-          // Token expired or invalid
-          localStorage.removeItem('gtg_token');
-          setToken(null);
           setUser(null);
           setIsAuthenticated(false);
         }
       } catch (err) {
         console.error('Failed to load user profile:', err);
+        setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
     };
 
     loadUser();
-  }, [token]);
+  }, []);
 
   // Register User
   const register = async (name, email, password) => {
@@ -56,14 +46,13 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ name, email, password })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('gtg_token', data.token);
-        setToken(data.token);
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true };
@@ -89,14 +78,13 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('gtg_token', data.token);
-        setToken(data.token);
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true };
@@ -122,14 +110,13 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ token: credential })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('gtg_token', data.token);
-        setToken(data.token);
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true };
@@ -146,9 +133,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Logout User
-  const logout = () => {
-    localStorage.removeItem('gtg_token');
-    setToken(null);
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { 
+        method: 'POST',
+        credentials: 'include' 
+      });
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -159,9 +152,9 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch('/api/auth/profile', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(profileData)
       });
       const data = await response.json();
@@ -180,9 +173,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await fetch('/api/auth/verify', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {
@@ -201,9 +192,9 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch('/api/auth/firebase-verify', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ phone })
       });
       const data = await response.json();
@@ -219,12 +210,9 @@ export const AuthProvider = ({ children }) => {
 
   // Refresh User State from server
   const refreshUser = async () => {
-    if (!token) return;
     try {
       const response = await fetch('/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {
@@ -239,7 +227,6 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        token,
         isAuthenticated,
         loading,
         error,

@@ -25,7 +25,7 @@ const CATEGORY_COVERS = {
 };
 
 const CreateEvent = () => {
-  const { user, token, refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const [mode, setMode] = useState('edit');
@@ -289,7 +289,7 @@ const CreateEvent = () => {
     try {
       const response = await fetch('/api/credits/purchase', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {
@@ -306,7 +306,6 @@ const CreateEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!token) return;
 
     if (user.hostCredits < 1) {
       toast.error('You have 0 host credits! Please purchase a credit or attend verified events first.');
@@ -341,9 +340,9 @@ const CreateEvent = () => {
       const response = await fetch('/api/events', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(payload)
       });
 
