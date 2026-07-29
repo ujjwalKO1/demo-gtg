@@ -11,6 +11,10 @@
       "destination": "/api/server.js"
     },
     {
+      "source": "/event/:id",
+      "destination": "/api/og-event.js?id=$id"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
