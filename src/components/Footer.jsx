@@ -35,17 +35,17 @@ const Footer = () => {
               <li><Link to="/map" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Map View</Link></li>
               <li><Link to="/create" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Host a Meetup</Link></li>
               <li><Link to="/dashboard" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Dashboard</Link></li>
-              <li><a href="#" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Safety Guidelines</a></li>
+              <li><Link to="/safety" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Safety Guidelines</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-bold text-[#451A03] mb-4">Company</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">About Us</a></li>
-              <li><a href="#" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Contact</a></li>
-              <li><a href="#" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Terms of Service</a></li>
+              <li><Link to="/about" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Contact</Link></li>
+              <li><Link to="/privacy" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-[#78350F] hover:text-[#E05236] text-sm transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
