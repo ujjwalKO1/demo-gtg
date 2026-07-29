@@ -38,8 +38,23 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://gtg-mu.vercel.app',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: '*', // Allow all origins for the MVP
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    // and requests from allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
