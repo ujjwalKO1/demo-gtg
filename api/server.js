@@ -17,6 +17,11 @@ import creditRoutes from '../server/routes/creditRoutes.js';
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET environment variable is not defined.');
+  process.exit(1);
+}
+
 // Connect to database
 connectDB().then(() => {
   // Auto-seed if needed

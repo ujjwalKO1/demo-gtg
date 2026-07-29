@@ -108,7 +108,7 @@ export const getEvent = async (req, res, next) => {
     if (authHeader && authHeader.startsWith('Bearer')) {
       try {
         const token = authHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'gtg_jwt_secret_key_production_ready_mvp_2026');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const joinRequest = await JoinRequest.findOne({ event: event._id, user: decoded.id });
         if (joinRequest) {
           userRequestStatus = joinRequest.status;
