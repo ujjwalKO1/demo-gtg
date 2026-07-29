@@ -105,7 +105,7 @@ const MapPage = () => {
   return (
     <div className="flex-grow flex flex-col md:flex-row h-[calc(100vh-69px)] overflow-hidden">
       {/* LEFT COLUMN: Event Lists Sidebar (Visible on PC, Hidden/Overlay on Mobile) */}
-      <div className="w-full md:w-96 lg:w-[420px] bg-[#FAF7F2] border-r border-[#E6DFD3] flex flex-col shrink-0 h-full">
+      <div className="w-full md:w-96 lg:w-[420px] bg-[#FAF7F2] border-r border-[#E6DFD3] flex flex-col shrink-0 h-[45vh] md:h-full z-20 shadow-md md:shadow-none">
         {/* Category Filters inside Sidebar */}
         <div className="p-4 border-b border-[#E6DFD3] bg-[#F4F0E8]/40 shrink-0">
           <h2 className="font-extrabold text-sm text-[#3E2723] mb-3 uppercase tracking-wider">Discover on Map</h2>
