@@ -172,9 +172,9 @@ const Home = () => {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[560px] h-[560px] aurora-glow pointer-events-none select-none animate-float"></div>
 
         <div className="max-w-4xl mx-auto flex flex-col justify-center items-center gap-8 z-10 py-24">
-          <h1 className="text-6xl sm:text-7xl md:text-8xl font-semibold tracking-[-0.04em] leading-[0.98] text-[#1D1D1F] max-w-5xl opacity-0 animate-hero-title [animation-fill-mode:forwards]">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-semibold tracking-[-0.04em] leading-[0.98] text-[#1D1D1F] max-w-5xl opacity-0 animate-hero-title [animation-fill-mode:forwards]">
             Discover Real-World <br/>
-            <span className="aurora-text block mt-4 text-4xl sm:text-5xl md:text-7xl whitespace-nowrap opacity-0 animate-hero-text-glow [animation-fill-mode:forwards]">
+            <span className="aurora-text block mt-4 text-3xl sm:text-5xl md:text-7xl whitespace-nowrap opacity-0 animate-hero-text-glow [animation-fill-mode:forwards]">
               Turn plans into memories.
             </span>
           </h1>

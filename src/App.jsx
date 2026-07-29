@@ -23,7 +23,7 @@ const AppLayout = ({ children }) => {
   const hideShell = ['/login', '/register'].includes(location.pathname);
 
   return (
-    <div className="main-layout">
+    <div className="main-layout pb-20 sm:pb-0">
       {!hideShell && <Header />}
       <main className="flex-grow flex flex-col">
         {children}
