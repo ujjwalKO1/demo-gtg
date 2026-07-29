@@ -4,6 +4,8 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
+import Footer from './components/Footer';
+import { Toaster } from 'react-hot-toast';
 
 // Pages
 import Home from './pages/Home';
@@ -26,7 +28,33 @@ const AppLayout = ({ children }) => {
       <main className="flex-grow flex flex-col">
         {children}
       </main>
+      {!hideShell && <Footer />}
       {!hideShell && <BottomNav />}
+      <Toaster 
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: '#FAF7F2',
+            color: '#291002',
+            border: '2px solid #121212',
+            boxShadow: '4px 4px 0px 0px #121212',
+            borderRadius: '12px',
+            fontWeight: '600'
+          },
+          success: {
+            iconTheme: {
+              primary: '#10B981',
+              secondary: '#FAF7F2',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#FAF7F2',
+            },
+          },
+        }}
+      />
     </div>
   );
 };

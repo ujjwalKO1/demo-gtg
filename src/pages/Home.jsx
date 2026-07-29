@@ -6,6 +6,9 @@ import {
   Search, MapPin, Sparkles, Navigation, Calendar, Plus, Compass,
   ShieldCheck, HelpCircle, Users, CheckCircle, ArrowRight, Quote, X
 } from 'lucide-react';
+import toast from 'react-hot-toast';
+import SkeletonCard from '../components/SkeletonCard';
+import EmptyState from '../components/EmptyState';
 
 const CATEGORIES = [
   { name: 'All' },
@@ -131,7 +134,7 @@ const Home = () => {
     }
 
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
+      toast.error('Geolocation is not supported by your browser.');
       return;
     }
 
@@ -145,7 +148,7 @@ const Home = () => {
       },
       (error) => {
         console.error(error);
-        alert('Could not retrieve your location.');
+        toast.error('Could not retrieve your location. Please check your permissions.');
       },
       {
         enableHighAccuracy: true,
@@ -206,6 +209,22 @@ const Home = () => {
             >
               <Compass size={17} /> Join Gatherings
             </button>
+          </div>
+
+          {/* Social Proof Avatars */}
+          <div className="flex flex-col items-center gap-3 mt-4 opacity-0 animate-slide-up [animation-delay:950ms] [animation-fill-mode:forwards]">
+            <div className="flex -space-x-3">
+              <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User 1" />
+              <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80" alt="User 2" />
+              <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="User 3" />
+              <img className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="User 4" />
+              <div className="w-10 h-10 rounded-full border-2 border-white bg-[#EAE5D9] text-[#78350F] flex items-center justify-center text-xs font-bold shadow-sm z-10">
+                +500
+              </div>
+            </div>
+            <p className="text-xs font-medium text-[#86868B]">
+              Join 500+ people meeting up this week.
+            </p>
           </div>
         </div>
 
@@ -296,24 +315,13 @@ const Home = () => {
 
         {/* Render Lists */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24">
-            <div className="w-9 h-9 border-[3px] border-[#1D1D1F] border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-4 text-xs text-[#86868B] font-medium">Querying gatherings...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((n) => (
+              <SkeletonCard key={n} />
+            ))}
           </div>
         ) : events.length === 0 ? (
-          <div className="bg-[#F5F5F7] rounded-xl border-2 border-[#121212] shadow-[4px_4px_0_0_rgba(18,18,18,1)] p-16 text-center max-w-md mx-auto">
-            <span className="text-4xl">💤</span>
-            <h3 className="font-semibold text-[#1D1D1F] text-base mt-4">No events found</h3>
-            <p className="text-xs text-[#86868B] mt-2 mb-6 leading-relaxed">
-              No gatherings found for "{activeCategory}" matching your keywords. Create a new one to invite others!
-            </p>
-            <button
-              onClick={() => navigate('/create')}
-              className="bg-[#1D1D1F] hover:bg-black text-white font-medium text-xs px-6 py-3 rounded-full transition-all cursor-pointer"
-            >
-              Start Event Group
-            </button>
-          </div>
+          <EmptyState message={`No gatherings found for "${activeCategory}" matching your keywords.`} />
         ) : (
           <div className="flex flex-col gap-14">
             {/* Trending sliders */}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LeafletMap from '../components/LeafletMap';
 import { MapPin, Navigation, Calendar, Users, ShieldCheck, X, ChevronRight } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const CATEGORIES = [
   { name: 'All', emoji: '🔍' },
@@ -70,11 +71,11 @@ const MapPage = () => {
         (error) => {
           console.error(error);
           if (error.code === 1) {
-            alert('Location permission denied. Please allow location access in your browser.');
+            toast.error('Location permission denied. Please allow location access in your browser.');
           } else if (error.code === 3) {
-            alert('Location request timed out. Your GPS signal might be weak indoors.');
+            toast.error('Location request timed out. Your GPS signal might be weak indoors.');
           } else {
-            alert('Could not determine your location.');
+            toast.error('Could not determine your location.');
           }
         },
         {

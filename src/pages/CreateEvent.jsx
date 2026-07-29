@@ -10,6 +10,7 @@ import {
   Sparkles, Eye, Edit3, ShieldCheck, HeartHandshake,
   Maximize2, Minimize2, Search, Camera, X, UploadCloud, Navigation
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const CATEGORY_COVERS = {
   Sports: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80',
@@ -127,7 +128,7 @@ const CreateEvent = () => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+      toast.error('Please select an image file');
       return;
     }
 
@@ -221,11 +222,11 @@ const CreateEvent = () => {
         const simplifiedAddress = parts.slice(0, 4).join(',').trim();
         setAddress(simplifiedAddress);
       } else {
-        alert('Location not found. Try searching for a specific neighborhood, street, or landmark (e.g. "Indiranagar, Bangalore").');
+        toast.error('Location not found. Try searching for a specific neighborhood, street, or landmark (e.g. "Indiranagar, Bangalore").');
       }
     } catch (err) {
       console.error('Error searching location:', err);
-      alert('Search API request failed. Please try again.');
+      toast.error('Search API request failed. Please try again.');
     } finally {
       setSearching(false);
     }
@@ -266,11 +267,11 @@ const CreateEvent = () => {
         (error) => {
           console.error("GPS Error:", error);
           if (error.code === 1) {
-            alert('Location permission denied. Please allow location access in your browser.');
+            toast.error('Location permission denied. Please allow location access in your browser.');
           } else if (error.code === 3) {
-            alert('Location request timed out. Your GPS signal might be weak indoors.');
+            toast.error('Location request timed out. Your GPS signal might be weak indoors.');
           } else {
-            alert('Could not determine your location.');
+            toast.error('Could not determine your location.');
           }
         },
         {
@@ -280,7 +281,7 @@ const CreateEvent = () => {
         }
       );
     } else {
-      alert('Geolocation is not supported by your browser.');
+      toast.error('Geolocation is not supported by your browser.');
     }
   };
 
@@ -292,13 +293,14 @@ const CreateEvent = () => {
       });
       const data = await response.json();
       if (data.success) {
-        alert(data.message);
+        toast.success('Successfully added 1 Credit!');
         refreshUser();
       } else {
-        alert('Purchase failed');
+        toast.error('Failed to purchase credit');
       }
     } catch (err) {
       console.error(err);
+      toast.error('Error connecting to server');
     }
   };
 
@@ -307,13 +309,13 @@ const CreateEvent = () => {
     if (!token) return;
 
     if (user.hostCredits < 1) {
-      alert('You have 0 host credits! Please purchase a credit or attend verified events first.');
+      toast.error('You have 0 host credits! Please purchase a credit or attend verified events first.');
       return;
     }
 
     const waRegex = /^(https?:\/\/)?(chat\.whatsapp\.com\/[a-zA-Z0-9]+)$/;
     if (!waRegex.test(whatsappLink)) {
-      alert('Please enter a valid WhatsApp invite link (chat.whatsapp.com/...)');
+      toast.error('Please enter a valid WhatsApp invite link (chat.whatsapp.com/...)');
       return;
     }
 
@@ -354,15 +356,15 @@ const CreateEvent = () => {
           origin: { y: 0.6 }
         });
 
-        alert('Congratulations! Your event is now published live.');
+        toast.success('Congratulations! Your event is now published live.');
         refreshUser();
         navigate('/');
       } else {
-        alert('Error creating event: ' + data.message);
+        toast.error('Error creating event: ' + data.message);
       }
     } catch (err) {
       console.error(err);
-      alert('Network connection error.');
+      toast.error('Network connection error.');
     } finally {
       setLoading(false);
     }
