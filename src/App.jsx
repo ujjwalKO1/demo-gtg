@@ -6,6 +6,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from "@vercel/analytics/react";
 
 // Pages
 import Home from './pages/Home';
@@ -109,6 +110,7 @@ function App() {
             {/* Fallback Catch-All */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <Analytics />
         </AppLayout>
       </AuthProvider>
     </Router>
