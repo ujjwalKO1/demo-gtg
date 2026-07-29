@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import VerificationPlaceholder from '../components/VerificationPlaceholder';
 import { 
   ShieldCheck, Phone, LogOut, Award, Zap, 
-  MapPin, Calendar, Clock, CreditCard, ChevronRight, Edit3, Mail 
+  MapPin, Calendar, Clock, CreditCard, ChevronRight, Edit3, Mail, Gift
 } from 'lucide-react';
 
 const Profile = () => {
@@ -71,24 +71,7 @@ const Profile = () => {
     setSavingBio(false);
   };
 
-  const handleBuyCredit = async () => {
-    try {
-      const response = await fetch('/api/credits/purchase', {
-        method: 'POST',
-        credentials: 'include'
-      });
-      const data = await response.json();
-      if (data.success) {
-        alert(data.message);
-        refreshUser();
-        fetchProfileData();
-      } else {
-        alert('Payment failed');
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
 
   const handleStartPhoneVerify = (e) => {
     e.preventDefault();
@@ -270,30 +253,34 @@ const Profile = () => {
                     ⚡ {user.hostCredits} Host Credits
                   </p>
                 </div>
-                <button
-                  onClick={handleBuyCredit}
-                  className="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-xs transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  <CreditCard size={12} /> Purchase Credit (₹99)
-                </button>
+                <div className="text-right">
+                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider block">Refer & Earn</span>
+                  <p className="text-[11px] text-gray-500 font-bold max-w-[150px] mt-0.5 leading-tight">
+                    Invite friends to earn 25 credits.
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <div className="flex justify-between items-center text-[10px] text-gray-500 font-bold mb-1">
-                  <span>Attendance Reward Progression</span>
-                  <span>{user.verifiedAttendanceForCredits} / 5 events</span>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2 flex items-center justify-between">
+                  <span className="text-xs font-bold text-amber-900">Your Referral Code</span>
+                  <span className="text-sm font-black tracking-widest text-amber-700">{user.referralCode || 'COMING-SOON'}</span>
                 </div>
-                {/* CSS progress bar */}
-                <div className="w-full bg-slate-100 rounded-full h-2">
-                  <div
-                    className="bg-amber-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${(user.verifiedAttendanceForCredits / 5) * 100}%` }}
-                  ></div>
-                </div>
-                <p className="text-[10px] text-gray-400 mt-1.5">
-                  Checking-in at 5 verified meetups rewards you with **+1 free host credit** automatically.
-                </p>
+                <button
+                  onClick={() => {
+                    if (user.referralCode) {
+                      navigator.clipboard.writeText(user.referralCode);
+                      alert('Referral code copied to clipboard!');
+                    }
+                  }}
+                  className="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-4 py-3 rounded-xl shadow-xs transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                >
+                  <Gift size={14} /> Copy Code
+                </button>
               </div>
+              <p className="text-[10px] text-gray-400 text-center">
+                New users get 25 credits. You get 25 credits. Hosting costs 3 credits. Joining grants 5 credits.
+              </p>
             </div>
 
             {/* Activities Hub Tabs */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
-import { User, Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
+import { User, Mail, Lock, AlertCircle, ArrowRight, Gift } from 'lucide-react';
 
 const Register = () => {
   const { register, loginWithGoogle } = useAuth();
@@ -11,6 +11,7 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [referredByCode, setReferredByCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,7 +27,7 @@ const Register = () => {
     }
 
     try {
-      const result = await register(name, email, password);
+      const result = await register(name, email, password, referredByCode);
       if (result.success) {
         navigate('/');
       } else {
@@ -126,6 +127,22 @@ const Register = () => {
                 placeholder="Minimum 6 characters"
                 className="w-full bg-gray-50 border border-gray-250 rounded-2xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-primary font-medium"
                 required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-450 uppercase mb-1.5">Referral Code (Optional)</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                <Gift size={16} />
+              </span>
+              <input
+                type="text"
+                value={referredByCode}
+                onChange={(e) => setReferredByCode(e.target.value)}
+                placeholder="Enter code to reward a friend"
+                className="w-full bg-gray-50 border border-gray-250 rounded-2xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:ring-1 focus:ring-primary font-medium"
               />
             </div>
           </div>

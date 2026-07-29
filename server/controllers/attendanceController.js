@@ -77,30 +77,34 @@ export const markAttendance = async (req, res, next) => {
           if (isPresent) {
             // Checked-in: Increment count & progression
             attendee.attendedEventsCount += 1;
-            attendee.verifiedAttendanceForCredits += 1;
+            
+            // Award 5 credits for attending an event
+            attendee.hostCredits += 5;
 
-            // Trigger credit reward if progress is 5
-            if (attendee.verifiedAttendanceForCredits >= 5) {
-              attendee.verifiedAttendanceForCredits = 0; // Reset progress
-              attendee.hostCredits += 1; // Award credit
-
-              // Register achievements
-              if (!attendee.achievements.includes('Frequent Goer')) {
-                attendee.achievements.push('Frequent Goer');
-              }
-
-              // Log transaction
-              await HostCreditTransaction.create({
-                user: attendee._id,
-                amount: 1,
-                type: 'attendance_reward',
-                details: 'Earned 1 host credit for attending 5 verified events'
-              });
+            // Register achievements
+            if (!attendee.achievements.includes('Frequent Goer')) {
+              attendee.achievements.push('Frequent Goer');
             }
+
+            // Log transaction
+            await HostCreditTransaction.create({
+              user: attendee._id,
+              amount: 5,
+              type: 'attendance_reward',
+              details: `Earned 5 host credits for attending event: ${event.title}`
+            });
           } else {
-            // Checked-out (reverted check-in): Decrement count & progress
+            // Checked-out (reverted check-in): Decrement count & remove credits to prevent abuse
             attendee.attendedEventsCount = Math.max(0, attendee.attendedEventsCount - 1);
-            attendee.verifiedAttendanceForCredits = Math.max(0, attendee.verifiedAttendanceForCredits - 1);
+            attendee.hostCredits = Math.max(0, attendee.hostCredits - 5);
+            
+            // Log negative transaction
+            await HostCreditTransaction.create({
+              user: attendee._id,
+              amount: -5,
+              type: 'attendance_reverted',
+              details: `Lost 5 host credits due to reverted attendance for event: ${event.title}`
+            });
           }
           await attendee.save();
         }

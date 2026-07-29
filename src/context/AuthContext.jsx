@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Register User
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, referredByCode = '') => {
     setLoading(true);
     setError(null);
     try {
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ name, email, password, referredByCode })
       });
 
       const data = await response.json();
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Login with Google
-  const loginWithGoogle = async (credential) => {
+  const loginWithGoogle = async (credential, referredByCode = '') => {
     setLoading(true);
     setError(null);
     try {
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({ token: credential })
+        body: JSON.stringify({ token: credential, referredByCode })
       });
 
       const data = await response.json();

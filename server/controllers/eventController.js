@@ -143,9 +143,9 @@ export const createEvent = async (req, res, next) => {
     }
 
     // Check host credits
-    if (user.hostCredits < 1) {
+    if (user.hostCredits < 3) {
       res.statusCode = 400;
-      throw new Error('Insufficient host credits. Purchase a credit for ₹99 or attend 5 verified events to earn one.');
+      throw new Error('Insufficient host credits. You need 3 credits to host an event.');
     }
 
     const {
@@ -160,8 +160,8 @@ export const createEvent = async (req, res, next) => {
       requireApproval
     } = req.body;
 
-    // Deduct 1 credit
-    user.hostCredits -= 1;
+    // Deduct 3 credits
+    user.hostCredits -= 3;
     await user.save();
 
     // Create event
@@ -179,12 +179,16 @@ export const createEvent = async (req, res, next) => {
       requireApproval: requireApproval !== undefined ? requireApproval : true
     });
 
+    // Add event to user's hosted list
+    user.eventsHosted.push(event._id);
+    await user.save();
+
     // Record credit transaction
     await HostCreditTransaction.create({
       user: user._id,
-      amount: -1,
+      amount: -3,
       type: 'event_host',
-      details: `Hosted event: "${title}"`
+      details: `Spent 3 credits to host event: "${title}"`
     });
 
     res.status(201).json({

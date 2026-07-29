@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
   },
   hostCredits: {
     type: Number,
-    default: 1 // Start with 1 free credit
+    default: 25
   },
   communityScore: {
     type: Number,
@@ -58,6 +58,16 @@ const UserSchema = new mongoose.Schema({
   achievements: {
     type: [String],
     default: []
+  },
+  referralCode: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  referredBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
   },
   attendedEventsCount: {
     type: Number,

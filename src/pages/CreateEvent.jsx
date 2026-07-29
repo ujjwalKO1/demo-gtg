@@ -285,30 +285,11 @@ const CreateEvent = () => {
     }
   };
 
-  const handlePurchaseCredit = async () => {
-    try {
-      const response = await fetch('/api/credits/purchase', {
-        method: 'POST',
-        credentials: 'include'
-      });
-      const data = await response.json();
-      if (data.success) {
-        toast.success('Successfully added 1 Credit!');
-        refreshUser();
-      } else {
-        toast.error('Failed to purchase credit');
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error('Error connecting to server');
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (user.hostCredits < 1) {
-      toast.error('You have 0 host credits! Please purchase a credit or attend verified events first.');
+    if (user.hostCredits < 3) {
+      toast.error('You need at least 3 host credits to publish an event! Refer friends or attend events to earn more.');
       return;
     }
 
@@ -408,20 +389,16 @@ const CreateEvent = () => {
               <div>
                 <p className="text-xs font-bold text-amber-900">Host Credit Cost Warning</p>
                 <p className="text-[11px] text-amber-700">
-                  Publishing consumes **1 credit**. Balance: **{user.hostCredits} credits**.
+                  Publishing consumes **3 credits**. Balance: **{user.hostCredits} credits**.
                 </p>
               </div>
             </div>
-            {user.hostCredits === 0 ? (
-              <button
-                type="button"
-                onClick={handlePurchaseCredit}
-                className="bg-amber-600 hover:bg-amber-750 text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-xs shrink-0"
-              >
-                Buy 1 Credit (₹99)
-              </button>
-            ) : (
+            {user.hostCredits < 3 ? (
               <span className="text-[10px] font-black text-amber-800 bg-amber-100/60 border border-amber-250 px-2.5 py-1 rounded-md uppercase">
+                Insufficient Credits
+              </span>
+            ) : (
+              <span className="text-[10px] font-black text-emerald-800 bg-emerald-100/60 border border-emerald-250 px-2.5 py-1 rounded-md uppercase">
                 Ready to Publish
               </span>
             )}
@@ -747,11 +724,11 @@ const CreateEvent = () => {
 
               <button
                 type="submit"
-                disabled={loading || !user || user.hostCredits < 1}
-                className="w-full bg-primary hover:bg-primary-dark text-white font-extrabold py-4 rounded-2xl text-xs transition-colors shadow-md shadow-purple-100 mt-4 flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                disabled={loading || !user || user.hostCredits < 3}
+                className="w-full bg-primary hover:bg-primary-dark text-white font-extrabold py-3.5 rounded-2xl text-xs transition-colors shadow-md shadow-purple-100 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
               >
                 <Plus size={16} strokeWidth={2.5} />
-                {loading ? 'Publishing meetup...' : 'Publish Meetup Live'}
+                {loading ? 'Creating Event...' : 'Publish Event (Cost: 3 Credits)'}
               </button>
             </div>
 

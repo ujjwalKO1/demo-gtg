@@ -16,12 +16,45 @@ const generateToken = (id) => {
   );
 };
 
+// Helper to process referral
+const processReferral = async (newUser, referredByCode) => {
+  if (referredByCode) {
+    const referrer = await User.findOne({ referralCode: referredByCode.toUpperCase() });
+    if (referrer) {
+      newUser.referredBy = referrer._id;
+      referrer.hostCredits += 25;
+      await referrer.save();
+
+      await HostCreditTransaction.create({
+        user: referrer._id,
+        amount: 25,
+        type: 'referral_bonus',
+        details: `Received 25 credits for referring ${newUser.name}`
+      });
+    }
+  }
+};
+
+// Helper to generate a unique referral code
+const generateReferralCode = async () => {
+  let isUnique = false;
+  let code = '';
+  while (!isUnique) {
+    code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const existing = await User.findOne({ referralCode: code });
+    if (!existing) {
+      isUnique = true;
+    }
+  }
+  return code;
+};
+
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, referredByCode } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -30,22 +63,28 @@ export const register = async (req, res) => {
       return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
+    const referralCode = await generateReferralCode();
+
     // Create user
     const user = await User.create({
       name,
       email,
       password,
-      hostCredits: 1,
+      hostCredits: 25,
+      referralCode,
       achievements: ['Welcome Gift']
     });
 
     if (user) {
+      await processReferral(user, referredByCode);
+      await user.save();
+
       // Create first transaction representing the welcome gift credit
       await HostCreditTransaction.create({
         user: user._id,
-        amount: 1,
+        amount: 25,
         type: 'welcome_gift',
-        details: 'Received 1 free host credit upon joining GTG'
+        details: 'Received 25 free host credits upon joining GTG'
       });
 
       const token = generateToken(user._id);
@@ -139,7 +178,7 @@ export const logout = (req, res) => {
 // @access  Public
 export const googleLogin = async (req, res, next) => {
   try {
-    const { token } = req.body;
+    const { token, referredByCode } = req.body;
     if (!token) {
       res.statusCode = 400;
       throw new Error('No Google token provided');
@@ -160,20 +199,25 @@ export const googleLogin = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
+      const referralCode = await generateReferralCode();
       user = await User.create({
         name,
         email,
         googleId,
         avatar: picture,
-        hostCredits: 1,
+        hostCredits: 25,
+        referralCode,
         achievements: ['Welcome Gift']
       });
 
+      await processReferral(user, referredByCode);
+      await user.save();
+
       await HostCreditTransaction.create({
         user: user._id,
-        amount: 1,
+        amount: 25,
         type: 'welcome_gift',
-        details: 'Received 1 free host credit upon joining GTG via Google'
+        details: 'Received 25 free host credits upon joining GTG via Google'
       });
     } else {
       if (!user.googleId) {
